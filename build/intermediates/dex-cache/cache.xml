@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/Users/kalirajkalimuthu/Desktop/HomeTown/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
+        <dex dex="/Users/kalirajkalimuthu/Desktop/HomeTown/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_c62c81b2848ce13d6b8500af04d64857ccf8ebb7/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kalirajkalimuthu/Desktop/HomeTown/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="54b1292f74952628c43bbe387cfc653e6be34c13">
+        <dex dex="/Users/kalirajkalimuthu/Desktop/HomeTown/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_b63f47593b05cdd182ab128952a7dad3aac1f4ad/classes.dex" />
+    </item>
+
+</items>
