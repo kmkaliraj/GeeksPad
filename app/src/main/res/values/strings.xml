@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Geekspad</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="SignUp_Link">No account yet? Create one</string>
+</resources>
