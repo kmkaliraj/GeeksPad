@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "67676739612",
+    "firebase_url": "https://geekspad-fc2c6.firebaseio.com",
+    "project_id": "geekspad-fc2c6",
+    "storage_bucket": "geekspad-fc2c6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:67676739612:android:d81ae9532db07135",
+        "android_client_info": {
+          "package_name": "com.example.sreer.geekspad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "67676739612-j4cj7qpepenjssco1aqmfddlbc8c870h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sreer.geekspad",
+            "certificate_hash": "d216851d94fe5849c73c3bf882c54d298ef719a2"
+          }
+        },
+        {
+          "client_id": "67676739612-l3cgu8jbhadkl1hfaoaj1343pk452ulq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6GkbKku1mIewXK9vzIz2OdkQyGa3T91E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "67676739612-l3cgu8jbhadkl1hfaoaj1343pk452ulq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

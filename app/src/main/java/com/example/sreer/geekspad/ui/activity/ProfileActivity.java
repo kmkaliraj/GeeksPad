@@ -1,9 +1,12 @@
-package com.example.sreer.geekspad;
+package com.example.sreer.geekspad.ui.activity;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.sreer.geekspad.ui.fragment.ProfileEditFragment;
+import com.example.sreer.geekspad.R;
 
 public class ProfileActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.sreer.geekspad;
+package com.example.sreer.geekspad.model;
 
 import java.util.Date;
 import java.util.List;
