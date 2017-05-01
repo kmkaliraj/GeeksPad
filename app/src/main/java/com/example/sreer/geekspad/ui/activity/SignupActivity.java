@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.sreer.geekspad.R;
 import com.example.sreer.geekspad.model.User;
 import com.example.sreer.geekspad.utils.Constants;
@@ -28,15 +27,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-//import com.google.firebase.database.DatabaseReference;
-//import com.google.firebase.database.FirebaseDatabase;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Long.parseLong;
 
 
 public class SignupActivity extends AppCompatActivity {
@@ -44,6 +40,7 @@ public class SignupActivity extends AppCompatActivity {
     private EditText mFirstName;
     private EditText mLastName;
     private EditText mEmail;
+    private EditText mPhone;
     private EditText mPassword;
     private EditText mBirthDay;
     private Spinner mCountry;
@@ -82,6 +79,7 @@ public class SignupActivity extends AppCompatActivity {
         mCountry = (Spinner) findViewById(R.id.input_country);
         mState = (Spinner)  findViewById(R.id.input_state);
         mEmail = (EditText) findViewById(R.id.input_email);
+        mPhone = (EditText) findViewById(R.id.input_phone);
         mCity  = (EditText) findViewById(R.id.input_city);
         mCalendarLink = (TextView) findViewById(R.id.link_calendar);
         mSubmitButton = (Button) findViewById(R.id.btn_signup);
@@ -142,8 +140,6 @@ public class SignupActivity extends AppCompatActivity {
 
         if(isEmptyFirstName())
             mFirstName.setError("FirstName is required!");
-        else if(isEmptyLastName())
-            mLastName.setError("LastName is required");
         else if(!isValidEmail())
             mEmail.setError("Must enter a valid email");
         else if(!isValidPassword())
@@ -160,8 +156,6 @@ public class SignupActivity extends AppCompatActivity {
             errorText.setError("State is Required");
             errorText.setTextColor(Color.RED);
         }
-        else if(!isValidCity())
-            mCity.setError("City is required!");
         else {
           signupUserwithFireBase();
         }
@@ -170,34 +164,29 @@ public class SignupActivity extends AppCompatActivity {
 
 
     public void addUserToFirebase(FirebaseUser firebaseuser){
-      /*  DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        String nickname = mNickName.getText().toString().trim();
-        String email = mEmail.getText().toString().trim();
-        User user = new User();
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        User user = createUser();
 
-        ChatUser user = new ChatUser(firebaseuser.getUid(),nickname,
-                email,
-                new SharedPrefUtil(getApplicationContext()).getString(Constants.ARG_FIREBASE_TOKEN));
-        database.child(Constants.ARG_USERS)
-                .child(nickname)
-                .setValue(user)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            progressDailog.dismiss();
-                            goToHomePage();
-                             mOnUserDatabaseListener.onSuccess(context.getString(R.string.user_successfully_added));
-                            Toast.makeText(getApplicationContext(), "Added to Firebase",
-                                    Toast.LENGTH_LONG).show();
-                        } else {
-                            progressDailog.dismiss();
-                            // mOnUserDatabaseListener.onFailure(context.getString(R.string.user_unable_to_add));
-                            Toast.makeText(getApplicationContext(), "Adding user details to firebase failed",
-                                    Toast.LENGTH_LONG).show();
+        try {
+            database.child(Constants.ARG_USERS)
+                    .child(user.cleanEmailAddress())
+                    .setValue(user)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                goToHomePage();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Adding user details to firebase failed",
+                                        Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
-                }); */
+                    });
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -231,7 +220,6 @@ public class SignupActivity extends AppCompatActivity {
                             Log.i("User Details:", "Username and password are added to firbase");
                             //finish();
                         } else {
-                            progressDailog.dismiss();
                             Toast.makeText(SignupActivity.this, "Creation User Account Failed" + task.getException(),
                                     Toast.LENGTH_SHORT).show();
                             firbaseStatus = false;
@@ -318,4 +306,21 @@ public class SignupActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public User createUser(){
+       User user = new User(mFirstName.getText().toString(),mEmail.getText().toString(),country,state);
+
+        if(mLastName.getText().toString().length()>0)
+            user.setFname(mLastName.getText().toString());
+
+        if(mPhone.getText().toString().length()>0)
+           user.setPhone(mPhone.getText().toString());
+
+        if(mBirthDay.getText().toString().length()>0)
+            user.setBirthDate(mBirthDay.getText().toString());
+
+        if(mCity.getText().toString().length()> 0)
+            user.setCity(mCity.getText().toString());
+
+        return user;
+    }
 }

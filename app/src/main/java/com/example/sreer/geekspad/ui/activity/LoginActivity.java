@@ -160,8 +160,7 @@ public class LoginActivity extends AppCompatActivity  {
 
     public void userLogin(String username, String password){
 
-        goToHomePage();
-    /*   auth.signInWithEmailAndPassword(username,password)
+       auth.signInWithEmailAndPassword(username,password)
                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -177,7 +176,7 @@ public class LoginActivity extends AppCompatActivity  {
 
                         }
                     }
-                }); */
+                });
     }
 
 

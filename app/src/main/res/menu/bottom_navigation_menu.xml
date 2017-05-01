@@ -4,6 +4,12 @@
     android:layout_height="match_parent">
 
     <item
+        android:id="@+id/menu_home"
+        android:title="Profile"
+        android:icon="@android:drawable/ic_menu_preferences"
+        />
+
+    <item
         android:id="@+id/menu_list"
         android:title="List"
         android:icon="@android:drawable/ic_dialog_dialer"

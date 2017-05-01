@@ -9,103 +9,109 @@ import java.util.List;
 
 public class User {
 
-    private String mEmail;
-    private String mPassword;
-    private String mFirstName;
-    private String mLastName;
-    private String mGender;
-    private long mPhone;
-    private String mCountry;
-    private String mState;
-    private String mCity;
-    private Date mBirthDate;
-    private List mSkills;
+    private String fname;
+    private String lname;
+    private String email;
+    private String phone;
+    private String birthDate;
+    private String country;
+    private String State;
+    private String city;
+    private List skills;
 
-    public String getmEmail() {
-        return mEmail;
+
+    public User(){
+
     }
 
-    public void setmEmail(String mEmail) {
-        this.mEmail = mEmail;
+    public User(String fname, String email) {
+        this.fname = fname;
+        this.email = email;
+
     }
 
-    public String getmPassword() {
-        return mPassword;
+
+    public User(String fname, String email, String country, String state) {
+        this.fname = fname;
+        this.email = email;
+        this.country = country;
+        State = state;
     }
 
-    public void setmPassword(String mPassword) {
-        this.mPassword = mPassword;
+    public String getFname() {
+        return fname;
     }
 
-    public String getmFirstName() {
-        return mFirstName;
+    public void setFname(String fname) {
+        this.fname = fname;
     }
 
-    public void setmFirstName(String mFirstName) {
-        this.mFirstName = mFirstName;
+    public String getLname() {
+        return lname;
     }
 
-    public String getmLastName() {
-        return mLastName;
+    public void setLname(String lname) {
+        this.lname = lname;
     }
 
-    public void setmLastName(String mLastName) {
-        this.mLastName = mLastName;
+    public String getEmail() {
+        return email;
     }
 
-    public String getmGender() {
-        return mGender;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setmGender(String mGender) {
-        this.mGender = mGender;
+    public String getPhone() {
+        return phone;
     }
 
-    public long getmPhone() {
-        return mPhone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public void setmPhone(long mPhone) {
-        this.mPhone = mPhone;
+    public String getBirthDate() {
+        return birthDate;
     }
 
-    public String getmCountry() {
-        return mCountry;
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
     }
 
-    public void setmCountry(String mCountry) {
-        this.mCountry = mCountry;
+    public String getCountry() {
+        return country;
     }
 
-    public String getmState() {
-        return mState;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public void setmState(String mState) {
-        this.mState = mState;
+    public String getState() {
+        return State;
     }
 
-    public String getmCity() {
-        return mCity;
+    public void setState(String state) {
+        State = state;
     }
 
-    public void setmCity(String mCity) {
-        this.mCity = mCity;
+    public String getCity() {
+        return city;
     }
 
-    public Date getmBirthDate() {
-        return mBirthDate;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public void setmBirthDate(Date mBirthDate) {
-        this.mBirthDate = mBirthDate;
+    public List getSkills() {
+        return skills;
     }
 
-    public List getmSkills() {
-        return mSkills;
+    public void setSkills(List skills) {
+        this.skills = skills;
     }
 
-    public void setmSkills(List mSkills) {
-        this.mSkills = mSkills;
+    public String cleanEmailAddress(){
+        return this.email.replace(".","-");
     }
+
 }
