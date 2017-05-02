@@ -80,7 +80,7 @@ public class ProfileEditFragment extends Fragment {
         mUserRefDatabase = FirebaseDatabase.getInstance().getReference().child("users");
         mAuth = FirebaseAuth.getInstance();
         progress = new ProgressDialog(getActivity());
-        mSave = (Button) view.findViewById(R.id.btn_signup);
+        mSave = (Button) view.findViewById(R.id.btn_add_skills);
         mFirstName = (EditText) view.findViewById(R.id.fname);
         mLastName = (EditText) view.findViewById(R.id.lname);
         mPassword = (EditText) view.findViewById(R.id.input_password);
@@ -163,7 +163,7 @@ public class ProfileEditFragment extends Fragment {
     public void populateCountryData(){
 
         ArrayAdapter countryAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.Countries, R.layout.spinner_item);
+                R.array.countries, R.layout.spinner_item);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCountry.setAdapter(countryAdapter);
 
