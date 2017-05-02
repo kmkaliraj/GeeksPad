@@ -1,10 +1,13 @@
-package com.example.kalirajkalimuthu.hometown.utils;
+package com.example.sreer.geekspad.utils;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import com.example.kalirajkalimuthu.hometown.R;
+
+import com.example.sreer.geekspad.R;
+
 
 public class ItemClickSupport {
+
     private final RecyclerView mRecyclerView;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;

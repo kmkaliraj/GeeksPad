@@ -1,5 +1,6 @@
 package com.example.sreer.geekspad.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Created by sreer on 28-04-2017.
  */
 
-public class User {
+public class User implements Serializable {
 
     private String fname;
     private String lname;

@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string-array name="skills">
+        <item>Select Skills(None)</item>
+        <item>Java</item>
+        <item>Python</item>
+        <item>Scala</item>
+        <item>HTML</item>
+        <item>CSS</item>
+        <item>JavaScript</item>
+        <item>Oracle</item>
+        <item>MongoDB</item>
+
+    </string-array>
+</resources>

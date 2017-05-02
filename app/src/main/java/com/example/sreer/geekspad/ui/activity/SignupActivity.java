@@ -55,10 +55,6 @@ public class SignupActivity extends AppCompatActivity {
     private String state;
     boolean firbaseStatus = true;
 
-
-    private List<String> countries = new ArrayList<String>(){{
-        add("Select Country(None)");
-    }};
     private  List<String> states = new ArrayList<String>(){{
         add("Select State(None)");
     }};
@@ -82,7 +78,7 @@ public class SignupActivity extends AppCompatActivity {
         mPhone = (EditText) findViewById(R.id.input_phone);
         mCity  = (EditText) findViewById(R.id.input_city);
         mCalendarLink = (TextView) findViewById(R.id.link_calendar);
-        mSubmitButton = (Button) findViewById(R.id.btn_signup);
+        mSubmitButton = (Button) findViewById(R.id.btn_add_skills);
 
         progressDailog = new ProgressDialog(this);
         progressDailog.setMessage("Loading");
@@ -137,7 +133,8 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void postUserDetails(){
-
+        goToSkillsView();
+        /*
         if(isEmptyFirstName())
             mFirstName.setError("FirstName is required!");
         else if(!isValidEmail())
@@ -158,7 +155,7 @@ public class SignupActivity extends AppCompatActivity {
         }
         else {
           signupUserwithFireBase();
-        }
+        } */
 
     }
 
@@ -175,7 +172,7 @@ public class SignupActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                goToHomePage();
+                                goToSkillsView();
                             } else {
                                 Toast.makeText(getApplicationContext(), "Adding user details to firebase failed",
                                         Toast.LENGTH_LONG).show();
@@ -202,6 +199,12 @@ public class SignupActivity extends AppCompatActivity {
     public void goToHomePage(){
         Intent userView = new Intent(this, HomePageActivity.class);
         startActivity(userView);
+        finish();
+    }
+
+    public void goToSkillsView(){
+        Intent skillsView = new Intent(this, SkillsActivity.class);
+        startActivity(skillsView);
         finish();
     }
 
@@ -278,9 +281,8 @@ public class SignupActivity extends AppCompatActivity {
 
 
     public void populateCountryData(){
-
         ArrayAdapter countryAdapter = ArrayAdapter.createFromResource(this,
-                R.array.Countries, R.layout.spinner_item);
+                R.array.countries, R.layout.spinner_item);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCountry.setAdapter(countryAdapter);
 
