@@ -6,7 +6,7 @@
     <item
         android:id="@+id/menu_home"
         android:title="Profile"
-        android:icon="@android:drawable/ic_menu_preferences"
+        android:icon="@android:drawable/ic_menu_crop"
         />
 
     <item
