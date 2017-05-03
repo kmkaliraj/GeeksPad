@@ -8,10 +8,7 @@ import android.widget.TextView;
 
 import com.example.sreer.geekspad.R;
 import com.example.sreer.geekspad.model.Skill;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by kalirajkalimuthu on 4/10/17.
@@ -20,7 +17,7 @@ import java.util.Map;
 public class SkillSetRecyclerAdapter extends RecyclerView.Adapter<SkillSetRecyclerAdapter.mySkillSetHolder> {
 
     public List<Skill> skillList;
-    public Map<String, Integer> addedSkills = new HashMap<String, Integer>();
+
     public static class mySkillSetHolder extends RecyclerView.ViewHolder {
         TextView skill_name, level;
 
@@ -30,6 +27,10 @@ public class SkillSetRecyclerAdapter extends RecyclerView.Adapter<SkillSetRecycl
             level = (TextView) view.findViewById(R.id.skill_level);
         }
     }
+
+   public List<Skill> getAllSkills(){
+       return this.skillList;
+   }
 
     public Skill getSkill(int position) {
         return skillList.get(position);
@@ -51,7 +52,7 @@ public class SkillSetRecyclerAdapter extends RecyclerView.Adapter<SkillSetRecycl
     public void onBindViewHolder(SkillSetRecyclerAdapter.mySkillSetHolder holder, int position) {
         Skill skill = skillList.get(position);
         holder.skill_name.setText(skill.skillname);
-        holder.level.setText(skill.proficency);
+        holder.level.setText("Proficiency Level: "+ skill.proficency);
     }
 
     @Override
@@ -61,14 +62,13 @@ public class SkillSetRecyclerAdapter extends RecyclerView.Adapter<SkillSetRecycl
 
     public void add(Skill skill) {
 
-        if(addedSkills.get(skill.skillname)!=null) {
-            Integer position= addedSkills.get(skill.skillname);
+        if(skillList.contains(skill)) {
+            Integer position= skillList.indexOf(skill);
             updateSkill(skill, position);
             return;
         }
         skillList.add(skill);
         notifyItemInserted(skillList.size() - 1);
-        addedSkills.put(skill.skillname,skillList.indexOf(skill));
     }
 
     public void updateSkill(Skill skill, int position){

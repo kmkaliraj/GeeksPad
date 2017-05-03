@@ -1,5 +1,7 @@
 package com.example.sreer.geekspad.model;
 
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
 /**
@@ -32,6 +34,17 @@ public class Skill implements Serializable{
         this.proficency = proficency;
     }
 
+    @Override
+    public int hashCode(){
+        return skillname.hashCode();
+    }
 
+    @Override
+    public boolean equals(Object other){
+        if(other instanceof Skill)
+            return this.skillname.equals(((Skill)other).skillname);
+
+        return false;
+    }
 
 }

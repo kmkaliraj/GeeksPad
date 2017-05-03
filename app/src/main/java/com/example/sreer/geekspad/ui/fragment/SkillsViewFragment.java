@@ -40,6 +40,15 @@ public class SkillsViewFragment extends Fragment implements ItemClickSupport.OnI
     private String skill_name = null;
     private int selectedItemPosition = -1;
 
+
+    public SkillSetRecyclerAdapter getSkillSetRecyclerAdapter() {
+        return skillSetRecyclerAdapter;
+    }
+
+    public void setSkillSetRecyclerAdapter(SkillSetRecyclerAdapter skillSetRecyclerAdapter) {
+        this.skillSetRecyclerAdapter = skillSetRecyclerAdapter;
+    }
+
     public SkillsViewFragment() {
         // Required empty public constructor
     }
@@ -133,7 +142,7 @@ public class SkillsViewFragment extends Fragment implements ItemClickSupport.OnI
                    // TODO Auto-generated method stub
 
                    if(skill_name !=null && !skill_name.contains("Select")){
-                       skill_level = "Proficiency Level: "+ seekbarText.getText().toString();
+                       skill_level = seekbarText.getText().toString();
                        Skill skill = new Skill(skill_name,skill_level);
                        skillSetRecyclerAdapter.add(skill);
                        skillsRecyclerView.smoothScrollToPosition(skillSetRecyclerAdapter.getItemCount()-1);
