@@ -18,13 +18,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sreer.geekspad.R;
+import com.example.sreer.geekspad.model.Skill;
 import com.example.sreer.geekspad.model.User;
+import com.example.sreer.geekspad.utils.FireBaseHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class ProfileViewFragment extends Fragment {
@@ -81,7 +88,7 @@ public class ProfileViewFragment extends Fragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getValue() != null) {
-                            User user = dataSnapshot.getValue(User.class);
+                            User user = FireBaseHelper.DataProcessor(dataSnapshot);
                             mProfileLine1.setText(user.getFname()+" "+user.getLname());
                             mProfileLine2.setText("Lives in "+user.getCity()+", "+user.getState()+", "+user.getCountry());
                             progress.dismiss();

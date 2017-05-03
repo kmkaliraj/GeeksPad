@@ -26,6 +26,7 @@ import com.example.sreer.geekspad.R;
 import com.example.sreer.geekspad.model.User;
 import com.example.sreer.geekspad.ui.activity.DatePickActivity;
 import com.example.sreer.geekspad.utils.Constants;
+import com.example.sreer.geekspad.utils.FireBaseHelper;
 import com.example.sreer.geekspad.utils.SpinnerUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -309,7 +310,7 @@ public class ProfileEditFragment extends Fragment {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.getValue() != null) {
-                                User user = dataSnapshot.getValue(User.class);
+                                User user = FireBaseHelper.DataProcessor(dataSnapshot);
                                 mCountry.setSelection(getIndex(mCountry,user.getCountry()));
                                 mFirstName.setText(user.getFname());
                                 mBirthDay.setText(user.getBirthDate());
