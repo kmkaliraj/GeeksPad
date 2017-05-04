@@ -98,7 +98,8 @@ public class SkillsActivity extends AppCompatActivity {
                             //finish();
                         } else {
                             progressDailog.dismiss();
-                            Toast.makeText(SkillsActivity.this, "Creation User Account Failed" + task.getException(),
+                            System.out.print(task.getException().getMessage());
+                            Toast.makeText(SkillsActivity.this, "Creation User Account Failed" + task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                             Log.w("Authentication Failed", "User Details are not added to firbase:  "+ task.getException().getMessage());
                         }
