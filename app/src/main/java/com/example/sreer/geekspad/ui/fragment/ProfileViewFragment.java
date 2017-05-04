@@ -5,8 +5,11 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,12 +17,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sreer.geekspad.R;
 import com.example.sreer.geekspad.model.Skill;
 import com.example.sreer.geekspad.model.User;
+import com.example.sreer.geekspad.ui.activity.ProfileEditActivity;
+import com.example.sreer.geekspad.ui.adapter.SkillSetRecyclerAdapter;
 import com.example.sreer.geekspad.utils.FireBaseHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -35,11 +41,12 @@ import java.util.Map;
 
 
 public class ProfileViewFragment extends Fragment {
-    private TextView mProfileLine1, mProfileLine2;
+    private TextView mProfileLine1, mProfileLine2, mProfileLine3;
+    private ImageView mEditIcon;
     private FirebaseAuth mAuth;
     private DatabaseReference mUserRefDatabase;
-    private ProgressDialog progress;
-    private Button mEdit;
+    private ProgressDialog mProgress;
+    private RecyclerView mSkills;
 
 
     public ProfileViewFragment() {
@@ -54,10 +61,12 @@ public class ProfileViewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile_view, container, false);
         mProfileLine1 = (TextView) view.findViewById(R.id.TextView_line1);
         mProfileLine2 = (TextView) view.findViewById(R.id.TextView_line2);
+        mProfileLine3 = (TextView) view.findViewById(R.id.TextView_line3);
         mAuth = FirebaseAuth.getInstance();
-        mEdit = (Button) view.findViewById(R.id.Button_Edit);
+        mEditIcon = (ImageView) view.findViewById(R.id.imageView_edit_icon);
         mUserRefDatabase = FirebaseDatabase.getInstance().getReference().child("users");
-        progress = new ProgressDialog(getActivity());
+        mProgress = new ProgressDialog(getActivity());
+        mSkills = (RecyclerView) view.findViewById(R.id.recycler_profile_skills);
         return view;
     }
 
@@ -65,16 +74,15 @@ public class ProfileViewFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle("Profile");
-        progress.setMessage("Loading...");
-        progress.show();
+        mProgress.setMessage("Loading...");
+        mProgress.show();
         getUserInfo();
-        mEdit.setOnClickListener(new View.OnClickListener() {
+        mEditIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editProfile();
             }
         });
-
     }
 
     public void getUserInfo() {
@@ -91,26 +99,33 @@ public class ProfileViewFragment extends Fragment {
                             User user = FireBaseHelper.DataProcessor(dataSnapshot);
                             mProfileLine1.setText(user.getFname()+" "+user.getLname());
                             mProfileLine2.setText("Lives in "+user.getCity()+", "+user.getState()+", "+user.getCountry());
-                            progress.dismiss();
+                            mProfileLine3.setText("Email: "+user.getEmail()+"\n"+"Phone: "+user.getPhone());
+                            displaySkills(user);
+                            mProgress.dismiss();
                         }
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         Toast.makeText(getActivity(),"Loading Failed",Toast.LENGTH_SHORT);
-                        progress.dismiss();
+                        mProgress.dismiss();
                     }
                 });
     }
 }
 
     public void editProfile(){
-        FragmentManager fragments = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragments.beginTransaction();
-        ProfileEditFragment profileEdit = new ProfileEditFragment();
-        fragmentTransaction.replace(R.id.detailFragment, profileEdit);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        Intent editProfile = new Intent(getActivity(), ProfileEditActivity.class);
+        startActivity(editProfile);
+    }
+
+    public void displaySkills(User user){
+        List<Skill> skillList = new ArrayList<>();
+        skillList.addAll(user.getSkills().values());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        mSkills.setLayoutManager(mLayoutManager);
+        SkillSetRecyclerAdapter skillSetRecyclerAdapter = new SkillSetRecyclerAdapter(skillList);
+        mSkills.setAdapter(skillSetRecyclerAdapter);
     }
 }
 

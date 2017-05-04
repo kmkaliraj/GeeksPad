@@ -3,28 +3,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/header_imageview"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:src="@drawable/tech"
-            android:scaleType="centerCrop"
+            android:layout_height="90dp"
             android:adjustViewBounds="true"
-            />
+            android:scaleType="centerCrop"
+            android:src="@drawable/tech" />
 
         <LinearLayout
             android:id="@+id/informations_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_below="@+id/header_imageview"
             android:gravity="center"
-            android:paddingTop="32dp"
-            android:paddingBottom="32dp">
+            android:orientation="vertical"
+            android:paddingTop="20dp">
 
 
             <TextView
@@ -32,8 +31,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textStyle="bold"
-                android:textSize="17dp" />
+                android:textSize="17dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/TextView_line2"
@@ -41,14 +40,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:gravity="center"
-                android:textColor="#FF707070"/>
+                android:textColor="#FF707070" />
 
-            <!--<TextView-->
-                <!--android:id="@+id/TextView_line3"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="8dp"-->
-                <!--android:textColor="#FF909090" />-->
+            <TextView
+            android:id="@+id/TextView_line3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="#FF909090" />
 
         </LinearLayout>
 
@@ -84,35 +83,48 @@
 
         <!-- cheat code: negative margin -->
         <ImageView
+            android:id="@+id/imageView"
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:src="@drawable/headshot_7"
-            android:layout_centerHorizontal="true"
             android:layout_above="@+id/informations_container"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="-16dp"
-            android:id="@+id/imageView" />
+            android:src="@drawable/headshot_7" />
+
+        <ImageView
+            android:id="@+id/imageView_edit_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_above="@+id/informations_container"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="-45dp"
+            android:layout_marginEnd="10dp"
+            android:clickable="true"
+            android:src="@android:drawable/ic_menu_edit" />
 
         <TextView
             android:id="@+id/TextView_skills"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_below="@+id/informations_container"
-            android:text="@string/skills"
             android:layout_marginLeft="10dp"
-            android:textStyle="bold"
-            android:textSize="23dp"/>
-
-        <Button
-            android:id="@+id/Button_Edit"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:layout_marginBottom="24dp"
-            android:text="@string/edit"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+            android:text="@string/skills"
+            android:textSize="23dp"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_profile_skills"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/TextView_skills"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:scrollbars="vertical" />
 
 
     </RelativeLayout>
+
 </FrameLayout>

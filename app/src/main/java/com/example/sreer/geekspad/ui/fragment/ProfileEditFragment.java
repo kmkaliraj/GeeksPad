@@ -10,6 +10,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.google.android.gms.R.color.common_google_signin_btn_text_light_disabled;
 
 
 public class ProfileEditFragment extends Fragment {
@@ -56,6 +59,7 @@ public class ProfileEditFragment extends Fragment {
     private Spinner mState;
     private EditText mCity;
     private TextView mCalendarLink;
+    private TextInputLayout mPasswordText;
     private FirebaseAuth mAuth;
     private String country;
     private String state;
@@ -85,6 +89,7 @@ public class ProfileEditFragment extends Fragment {
         mFirstName = (EditText) view.findViewById(R.id.fname);
         mLastName = (EditText) view.findViewById(R.id.lname);
         mPassword = (EditText) view.findViewById(R.id.input_password);
+        mPasswordText = (TextInputLayout) view.findViewById(R.id.TextInputLayout_password);
         mBirthDay = (EditText) view.findViewById(R.id.input_year);
         mCountry = (Spinner) view.findViewById(R.id.input_country);
         mState = (Spinner)  view.findViewById(R.id.input_state);
@@ -92,7 +97,11 @@ public class ProfileEditFragment extends Fragment {
         mPhone = (EditText) view.findViewById(R.id.input_phone);
         mCity  = (EditText) view.findViewById(R.id.input_city);
         mCalendarLink = (TextView) view.findViewById(R.id.link_calendar);
-        mSave.setText("Save");
+        mPasswordText.removeAllViews();
+        mPasswordText.setVisibility(View.GONE);
+        mEmail.setTag(mEmail.getKeyListener());
+        mEmail.setKeyListener(null);
+        mEmail.setBackgroundColor(getResources().getColor(common_google_signin_btn_text_light_disabled));
         return view;
     }
 
@@ -318,10 +327,10 @@ public class ProfileEditFragment extends Fragment {
                                 mEmail.setText(user.getEmail());
                                 mPhone.setText(user.getPhone());
                                 country = user.getCountry();
-                                populateStateDetails(user.getState());
                                 mCity.setText(user.getCity());
                                 progress.dismiss();
-                                setupSpinners();
+                                //setupSpinners();
+                                populateStateDetails(user.getState());
                             }
                         }
 
