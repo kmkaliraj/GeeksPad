@@ -12,17 +12,29 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 import com.example.sreer.geekspad.R;
+import com.example.sreer.geekspad.ui.fragment.DisplayMapFragment;
 import com.example.sreer.geekspad.ui.fragment.ProfileViewFragment;
+import com.example.sreer.geekspad.ui.fragment.UsersListViewFragment;
 
 public class HomePageActivity extends AppCompatActivity {
 
     private BottomNavigationView mBottomNav;
     private ProfileViewFragment userProfile;
+    private UsersListViewFragment usersList;
+    private DisplayMapFragment usersMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+
+        FragmentManager manager = getFragmentManager();
+        Fragment fragment = manager.findFragmentById(R.id.detailFragment);
+        FragmentTransaction fragmentTransaction = manager.beginTransaction();
+        usersList = new UsersListViewFragment();
+        fragmentTransaction.replace(R.id.detailFragment, usersList);
+        fragmentTransaction.commit();
+
         mBottomNav = (BottomNavigationView) findViewById(R.id.navigation);
         mBottomNav.getMenu().getItem(1).setChecked(true);
         mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -35,15 +47,32 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     public void handleMenuSelection(MenuItem item){
+
         FragmentManager manager = getFragmentManager();
         Fragment fragment = manager.findFragmentById(R.id.detailFragment);
         FragmentTransaction fragmentTransaction = manager.beginTransaction();
+
         switch (item.getItemId()) {
             case R.id.menu_home:
+                if(!(fragment instanceof ProfileViewFragment)) {
                     ProfileViewFragment userProfile = new ProfileViewFragment();
                     fragmentTransaction.replace(R.id.detailFragment, userProfile);
+                }
                     break;
+            case R.id.menu_list:
+                if(!(fragment instanceof UsersListViewFragment)) {
+                    usersList = new UsersListViewFragment();
+                    fragmentTransaction.replace(R.id.detailFragment, usersList);
+                }
+                     break;
+            case R.id.menu_map:
+                if(!(fragment instanceof DisplayMapFragment)) {
+                    usersMap = new DisplayMapFragment();
+                    fragmentTransaction.replace(R.id.detailFragment, usersMap);
+                }
+                break;
         }
+
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
@@ -77,7 +106,4 @@ public class HomePageActivity extends AppCompatActivity {
         finish();
         Toast.makeText(this, "Logged Out Successfully" , Toast.LENGTH_LONG).show();
     }
-
-
-
 }
