@@ -1,4 +1,4 @@
-package com.example.sreer.geekspad.ui.activity;
+package com.example.sreer.geekspad.ui.fragment;
 
 
 import android.app.ProgressDialog;
@@ -21,15 +21,12 @@ import android.widget.Toast;
 import com.example.sreer.geekspad.R;
 import com.example.sreer.geekspad.chat.ChatContract;
 import com.example.sreer.geekspad.chat.ChatPresenter;
+import com.example.sreer.geekspad.db.FireBaseHelper;
 import com.example.sreer.geekspad.model.Chat;
-import com.example.sreer.geekspad.model.ChatUser;
+import com.example.sreer.geekspad.model.User;
 import com.example.sreer.geekspad.ui.adapter.ChatRecyclerAdapter;
 import com.example.sreer.geekspad.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -38,7 +35,7 @@ import java.util.ArrayList;
  * Created by kalirajkalimuthu on 4/8/17.
  */
 
-public class ChatFragment extends Fragment implements ChatContract.View, TextView.OnEditorActionListener {
+public class ChatFragment extends Fragment implements ChatContract.View, TextView.OnEditorActionListener, FireBaseHelper.getUserByMailInterface {
     private RecyclerView mRecyclerViewChat;
     private EditText mETxtMessage;
 
@@ -52,12 +49,11 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
 
     private String currentUser;
     private String currentUserMail;
+    private FireBaseHelper fireBaseHelper;
 
 
     public static ChatFragment newInstance(String receiver,
-                                           String receiverMail,
-                                           String receiverUid,
-                                           String firebaseToken) {
+                                           String receiverMail) {
         Bundle args = new Bundle();
         args.putString(Constants.ARG_RECEIVER, receiver);
         args.putString(Constants.ARG_RECEIVER_MAIL, receiverMail);
@@ -100,6 +96,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
     }
 
     private void init() {
+        fireBaseHelper = new FireBaseHelper(ChatFragment.this);
         initCurrentUser();
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setTitle("Loading");
@@ -126,25 +123,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
     }
 
     public void initCurrentUser(){
-        FirebaseDatabase.getInstance().getReference().
-                child(Constants.ARG_USERS)
-                .orderByChild("uid")
-                .equalTo(FirebaseAuth.getInstance().getCurrentUser().getEmail().replaceAll(".","-")).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
-                    ChatUser user = dataSnapshot.getChildren().iterator().next().getValue(ChatUser.class);
-                    currentUser = user.firsname;
-                    currentUserMail =user.email;
-                }
-                else
-                    Toast.makeText(getActivity(), "user not exist in firebase" , Toast.LENGTH_LONG).show();
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getActivity(), "failed to bring the data" , Toast.LENGTH_LONG).show();
-            }
-        });
+
     }
 
     @Override
@@ -198,5 +177,14 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onSuccessGetUserByMail(User user) {
+        currentUser = user.getFirstname();
+        currentUserMail = user.getEmail();
+    }
 
+    @Override
+    public void onFailureGetUserByMail() {
+        Toast.makeText(getActivity(), "Failed to get current user details", Toast.LENGTH_SHORT).show();
+    }
 }

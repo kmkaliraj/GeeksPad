@@ -39,6 +39,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Double.parseDouble;
 import static java.lang.Float.parseFloat;
 import static java.lang.Long.parseLong;
 
@@ -97,19 +98,11 @@ public class DisplayMapFragment extends Fragment implements OnMapReadyCallback,F
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
             return;
-        }
-        mMap.setMyLocationEnabled(true);
-           Location myLocation = mMap.getMyLocation();
-           LatLng myLatLng = new LatLng(myLocation.getLatitude(),
-                   myLocation.getLongitude());
-           CameraPosition myPosition = new CameraPosition.Builder()
-                   .target(myLatLng).build();
-           googleMap.animateCamera(
-                   CameraUpdateFactory.newCameraPosition(myPosition));
+           }
         }
 
     public void addMarker(User user){
-        LatLng point = new LatLng(parseFloat(user.getLatitude()),parseFloat(user.getLongitude()));
+        LatLng point = new LatLng(parseDouble(user.getLatitude()),parseDouble(user.getLongitude()));
         MarkerOptions marker = new MarkerOptions() .position(point);
         mMap.addMarker(marker.title(user.getFirstname()));
         CameraUpdate newLocation = CameraUpdateFactory.newLatLngZoom(point, 6);
