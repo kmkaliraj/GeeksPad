@@ -58,6 +58,10 @@ public class FireBaseHelper {
                     user.setState(String.valueOf(userSnapshot.getValue()));
                 if (dataKey.equals("city"))
                     user.setCity(String.valueOf(userSnapshot.getValue()));
+                if (dataKey.equals("latitude"))
+                    user.setLatitude(String.valueOf(userSnapshot.getValue()));
+                if (dataKey.equals("longitude"))
+                    user.setLongitude(String.valueOf(userSnapshot.getValue()));
             }
         }
         else {
