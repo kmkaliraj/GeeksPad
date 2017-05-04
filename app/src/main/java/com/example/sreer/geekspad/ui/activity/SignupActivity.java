@@ -202,10 +202,8 @@ public class SignupActivity extends AppCompatActivity {
         String country = mCountry.getSelectedItem().toString();
         states.clear();
         states.add("Select State(None)");
-
         if(!country.contains("Select"))
         states.addAll(AppUtil.getStates(this,country));
-
         ArrayAdapter<String> statesAdapter=new ArrayAdapter<String>(this, R.layout.spinner_item, states);
         statesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mState.setAdapter(statesAdapter);
