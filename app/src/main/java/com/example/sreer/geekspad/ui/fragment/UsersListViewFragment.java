@@ -2,6 +2,7 @@ package com.example.sreer.geekspad.ui.fragment;
 
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,8 +17,14 @@ import android.view.ViewGroup;
 import com.example.sreer.geekspad.R;
 import com.example.sreer.geekspad.db.FireBaseHelper;
 import com.example.sreer.geekspad.model.User;
+import com.example.sreer.geekspad.ui.activity.ProfileActivity;
 import com.example.sreer.geekspad.ui.adapter.UsersAdapter;
+import com.example.sreer.geekspad.utils.Constants;
 import com.example.sreer.geekspad.utils.ItemClickSupport;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,6 +87,9 @@ public class UsersListViewFragment extends Fragment implements ItemClickSupport.
     @Override
     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 
+        String emailKey = ((UsersAdapter) recyclerView.getAdapter()).getUser(position).cleanEmailAddress();
+        goToProfile(emailKey);
+
     }
 
     public UsersListViewFragment() {
@@ -97,6 +107,13 @@ public class UsersListViewFragment extends Fragment implements ItemClickSupport.
 
     @Override
     public void onFailureGetAllUsers() {
+
+    }
+
+    public void goToProfile(String emailKey){
+        Intent userProfile = new Intent(getActivity(), ProfileActivity.class);
+        userProfile.putExtra("email",emailKey);
+        startActivity(userProfile);
 
     }
 }

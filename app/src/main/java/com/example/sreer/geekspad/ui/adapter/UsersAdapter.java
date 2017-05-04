@@ -1,14 +1,23 @@
 package com.example.sreer.geekspad.ui.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.sreer.geekspad.R;
 import com.example.sreer.geekspad.model.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -23,6 +32,7 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public UsersAdapter(List<User> users){
           this.usersList = users;
     }
+
 
     public UsersAdapter(List<User> users, RecyclerView recyclerView) {
 
@@ -87,6 +97,7 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             nickname = (TextView) view.findViewById(R.id.fullname);
             locationdetail = (TextView) view.findViewById(R.id.locationdetail);
         }
+
     }
 
 }

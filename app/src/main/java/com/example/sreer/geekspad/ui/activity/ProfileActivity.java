@@ -16,9 +16,12 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        Bundle data = getIntent().getExtras();
         FragmentManager fragments = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragments.beginTransaction();
         ProfileViewFragment profileView = new ProfileViewFragment();
+        if(data!=null)
+            profileView.setArguments(data);
         fragmentTransaction.replace(R.id.profileFragment, profileView);
         fragmentTransaction.commit();
     }

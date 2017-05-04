@@ -3,6 +3,7 @@ package com.example.sreer.geekspad.ui.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,11 +34,13 @@ import java.util.List;
 
 public class ProfileViewFragment extends Fragment {
     private TextView mProfileLine1, mProfileLine2, mProfileLine3;
-    private ImageView mEditIcon;
+    private ImageView mEditIcon, mPhoneIcon;
     private FirebaseAuth mAuth;
     private DatabaseReference mUserRefDatabase;
     private ProgressDialog mProgress;
     private RecyclerView mSkills;
+    private Boolean isView = false;
+    private String emailKey,phone;
 
 
     public ProfileViewFragment() {
@@ -58,6 +61,7 @@ public class ProfileViewFragment extends Fragment {
         mUserRefDatabase = FirebaseDatabase.getInstance().getReference().child("users");
         mProgress = new ProgressDialog(getActivity());
         mSkills = (RecyclerView) view.findViewById(R.id.recycler_profile_skills);
+        mPhoneIcon = (ImageView) view.findViewById(R.id.imageView_phone_icon);
         return view;
     }
 
@@ -67,19 +71,24 @@ public class ProfileViewFragment extends Fragment {
         getActivity().setTitle("Profile");
         mProgress.setMessage("Loading...");
         mProgress.show();
+        if(getArguments() != null){
+            emailKey = getArguments().getString("email");
+            isView = true;
+            setupPhoneDetails();
+        }
+        else
+            setupEdit();
         getUserInfo();
-        mEditIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editProfile();
-            }
-        });
     }
 
     public void getUserInfo() {
         User user = new User();
-        if (mAuth.getCurrentUser() != null) {
-        user.setEmail(mAuth.getCurrentUser().getEmail());
+        if(isView){
+            user.setEmail(emailKey);
+        }
+        else if (mAuth.getCurrentUser() != null) {
+            user.setEmail(mAuth.getCurrentUser().getEmail());
+        }
         FirebaseDatabase.getInstance().getReference()
                 .child("users")
                 .child(user.cleanEmailAddress())
@@ -91,6 +100,7 @@ public class ProfileViewFragment extends Fragment {
                             mProfileLine1.setText(user.getFirstname()+" "+user.getLastname());
                             mProfileLine2.setText("Lives in "+user.getCity()+", "+user.getState()+", "+user.getCountry());
                             mProfileLine3.setText("Email: "+user.getEmail());
+                            phone = user.getPhone();
                             displaySkills(user);
                             mProgress.dismiss();
                         }
@@ -103,7 +113,6 @@ public class ProfileViewFragment extends Fragment {
                     }
                 });
     }
-}
 
     public void editProfile(){
         Intent editProfile = new Intent(getActivity(), ProfileEditActivity.class);
@@ -117,6 +126,34 @@ public class ProfileViewFragment extends Fragment {
         mSkills.setLayoutManager(mLayoutManager);
         SkillSetRecyclerAdapter skillSetRecyclerAdapter = new SkillSetRecyclerAdapter(skillList);
         mSkills.setAdapter(skillSetRecyclerAdapter);
+    }
+
+    public void setupPhoneDetails(){
+        mPhoneIcon.setVisibility(View.VISIBLE);
+        mEditIcon.setVisibility(View.INVISIBLE);
+        mPhoneIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(phone!=null) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:" + phone));
+                    startActivity(intent);
+                }
+                else
+                    Toast.makeText(getActivity(),"Phone Details not available",Toast.LENGTH_SHORT);
+            }
+        });
+    }
+
+    public void setupEdit(){
+        mPhoneIcon.setVisibility(View.INVISIBLE);
+        mEditIcon.setVisibility(View.VISIBLE);
+        mEditIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editProfile();
+            }
+        });
     }
 
 }
