@@ -1,10 +1,11 @@
 package com.example.sreer.geekspad.ui.activity;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+
 import android.content.Intent;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -28,7 +29,7 @@ public class HomePageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
-        FragmentManager manager = getFragmentManager();
+        FragmentManager manager = getSupportFragmentManager();
         Fragment fragment = manager.findFragmentById(R.id.detailFragment);
         FragmentTransaction fragmentTransaction = manager.beginTransaction();
         usersList = new UsersListViewFragment();
@@ -48,7 +49,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     public void handleMenuSelection(MenuItem item){
 
-        FragmentManager manager = getFragmentManager();
+        FragmentManager manager = getSupportFragmentManager();
         Fragment fragment = manager.findFragmentById(R.id.detailFragment);
         FragmentTransaction fragmentTransaction = manager.beginTransaction();
 

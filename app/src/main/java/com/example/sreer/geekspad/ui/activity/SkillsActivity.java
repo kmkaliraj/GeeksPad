@@ -1,12 +1,13 @@
 package com.example.sreer.geekspad.ui.activity;
 
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.example.sreer.geekspad.R;
 import com.example.sreer.geekspad.model.Skill;
 import com.example.sreer.geekspad.model.User;
+import com.example.sreer.geekspad.ui.fragment.ProfileViewFragment;
 import com.example.sreer.geekspad.ui.fragment.SkillsViewFragment;
 import com.example.sreer.geekspad.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,18 +38,21 @@ public class SkillsActivity extends AppCompatActivity {
     private SkillsViewFragment skillsViewFragment;
     private FirebaseAuth auth;
     public ProgressDialog progressDailog;
+    private boolean isEdit;
+    private User editUserInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_skills);
-
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            setTitle("Add Skills");
-
-            FragmentManager fragments = getFragmentManager();
+            setTitle("Skills");
+            Bundle data = getIntent().getExtras();
+            isEdit = data.getBoolean("ForEdit");
+            FragmentManager fragments = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragments.beginTransaction();
             skillsViewFragment = new SkillsViewFragment();
+            skillsViewFragment.setArguments(data);
             fragmentTransaction.add(R.id.skills_fragment, skillsViewFragment);
             fragmentTransaction.commit();
 
@@ -60,6 +65,8 @@ public class SkillsActivity extends AppCompatActivity {
         progressDailog.setCancelable(false);
 
         Button btn_register = (Button) findViewById(R.id.btn_register);
+        if(isEdit)
+            btn_register.setText("Update");
 
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,10 +80,14 @@ public class SkillsActivity extends AppCompatActivity {
         progressDailog.show();
         Bundle data = getIntent().getExtras();
         User user = (User)data.getParcelable("user");
+        editUserInfo = (User)data.getParcelable("user");
         String email =  data.getString("email");
         String password = data.getString("password");
         addSkillstoUser(user);
-        signupUserwithFireBase(email,password,user);
+        if(isEdit)
+            addUserToFirebase(user);
+        else
+            signupUserwithFireBase(email,password,user);
     }
 
     public void addSkillstoUser(User user){
@@ -93,7 +104,6 @@ public class SkillsActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             addUserToFirebase(user);
-
                             Log.i("User Details:", "Username and password are added to firbase");
                             //finish();
                         } else {
@@ -111,7 +121,6 @@ public class SkillsActivity extends AppCompatActivity {
 
     public void addUserToFirebase(User user){
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-
         try {
             database.child(Constants.ARG_USERS)
                     .child(user.cleanEmailAddress())
@@ -120,7 +129,10 @@ public class SkillsActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                goToHomePage();
+                                if(isEdit)
+                                    goToProfile();
+                                else
+                                    goToHomePage();
                             } else {
                                 progressDailog.dismiss();
                                 Toast.makeText(getApplicationContext(), "Adding user details to firebase failed",
@@ -152,5 +164,15 @@ public class SkillsActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void goToProfile(){
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+
+    }
+
+
 
 }

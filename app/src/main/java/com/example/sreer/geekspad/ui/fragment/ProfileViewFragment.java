@@ -1,11 +1,10 @@
 package com.example.sreer.geekspad.ui.fragment;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -91,7 +90,7 @@ public class ProfileViewFragment extends Fragment {
                             User user = FireBaseHelper.getUserFromSnapShot(dataSnapshot);
                             mProfileLine1.setText(user.getFirstname()+" "+user.getLastname());
                             mProfileLine2.setText("Lives in "+user.getCity()+", "+user.getState()+", "+user.getCountry());
-                            mProfileLine3.setText("Email: "+user.getEmail()+"\n"+"Phone: "+user.getPhone());
+                            mProfileLine3.setText("Email: "+user.getEmail());
                             displaySkills(user);
                             mProgress.dismiss();
                         }
@@ -119,5 +118,6 @@ public class ProfileViewFragment extends Fragment {
         SkillSetRecyclerAdapter skillSetRecyclerAdapter = new SkillSetRecyclerAdapter(skillList);
         mSkills.setAdapter(skillSetRecyclerAdapter);
     }
+
 }
 

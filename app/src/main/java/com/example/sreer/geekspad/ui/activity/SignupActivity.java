@@ -137,6 +137,7 @@ public class SignupActivity extends AppCompatActivity {
         skillsView.putExtra("user",user);
         skillsView.putExtra("email",user.getEmail());
         skillsView.putExtra("password",mPassword.getText().toString());
+        skillsView.putExtra("ForEdit",false);
         startActivity(skillsView);
     }
 
@@ -221,7 +222,6 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public User createUser(){
-
         if(isEmptyFirstName())
             mFirstName.setError("FirstName is required!");
         else if(isEmptyLastName())

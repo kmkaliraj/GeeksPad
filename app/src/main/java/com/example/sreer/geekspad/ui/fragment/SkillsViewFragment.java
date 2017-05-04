@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Display;
@@ -24,11 +24,20 @@ import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sreer.geekspad.R;
+import com.example.sreer.geekspad.db.FireBaseHelper;
 import com.example.sreer.geekspad.model.Skill;
+import com.example.sreer.geekspad.model.User;
 import com.example.sreer.geekspad.ui.adapter.SkillSetRecyclerAdapter;
 import com.example.sreer.geekspad.utils.ItemClickSupport;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +48,7 @@ public class SkillsViewFragment extends Fragment implements ItemClickSupport.OnI
     private List<Skill> skillList;
     private String skill_name = null;
     private int selectedItemPosition = -1;
+    private FirebaseAuth mAuth;
 
 
     public SkillSetRecyclerAdapter getSkillSetRecyclerAdapter() {
@@ -67,11 +77,22 @@ public class SkillsViewFragment extends Fragment implements ItemClickSupport.OnI
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_skills_view, container, false);
         skillList = new ArrayList<>();
+        mAuth = FirebaseAuth.getInstance();
         skillsRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_skills_view);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         skillsRecyclerView.setLayoutManager(mLayoutManager);
-        skillSetRecyclerAdapter = new SkillSetRecyclerAdapter(skillList);
-        skillsRecyclerView.setAdapter(skillSetRecyclerAdapter);
+        if (getArguments() != null) {
+            boolean isEdit = getArguments().getBoolean("ForEdit");
+            if(isEdit) {
+                setUserSkills();
+
+            }
+            else {
+                skillSetRecyclerAdapter = new SkillSetRecyclerAdapter(skillList);
+                skillsRecyclerView.setAdapter(skillSetRecyclerAdapter);
+            }
+        }
+
         ItemClickSupport.addTo(skillsRecyclerView).setOnItemClickListener(this);
         return view;
 
@@ -187,7 +208,7 @@ public class SkillsViewFragment extends Fragment implements ItemClickSupport.OnI
 
            // initialize skills in the spinner
            final Spinner mSkills = (Spinner)popupView.findViewById(R.id.input_skills);
-           ArrayAdapter countryAdapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(),
+           ArrayAdapter countryAdapter = ArrayAdapter.createFromResource(getActivity(),
                    R.array.skills, R.layout.spinner_item);
            countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
            mSkills.setAdapter(countryAdapter);
@@ -208,6 +229,40 @@ public class SkillsViewFragment extends Fragment implements ItemClickSupport.OnI
     } catch (Exception e) {
         e.printStackTrace();
         }
+    }
+
+    public void setUserSkills(){
+        User user = new User();
+        if (mAuth.getCurrentUser() != null) {
+            user.setEmail(mAuth.getCurrentUser().getEmail());
+            FirebaseDatabase.getInstance().getReference()
+                    .child("users")
+                    .child(user.cleanEmailAddress())
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() != null) {
+                                if(dataSnapshot.hasChild("skills")) {
+                                    User user = FireBaseHelper.getUserFromSnapShot(dataSnapshot);
+                                    List<Skill> skillList = new ArrayList<>();
+                                    skillList.addAll(user.getSkills().values());
+                                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+                                    skillSetRecyclerAdapter = new SkillSetRecyclerAdapter(skillList);
+                                    skillsRecyclerView.setLayoutManager(mLayoutManager);
+                                    skillsRecyclerView.setAdapter(skillSetRecyclerAdapter);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Toast.makeText(getActivity(),"Loading Failed",Toast.LENGTH_SHORT);
+                        }
+                    });
+        }
+
+
+
     }
 
 
