@@ -1,5 +1,6 @@
 package com.example.sreer.geekspad.ui.activity;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -17,8 +18,14 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         FragmentManager fragments = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragments.beginTransaction();
-        ProfileViewFragment profileEdit = new ProfileViewFragment();
-        fragmentTransaction.replace(R.id.profileFragment, profileEdit);
+        ProfileViewFragment profileView = new ProfileViewFragment();
+        fragmentTransaction.replace(R.id.profileFragment, profileView);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, LoginActivity.class)); //Go back to home page
+        finish();
     }
 }
