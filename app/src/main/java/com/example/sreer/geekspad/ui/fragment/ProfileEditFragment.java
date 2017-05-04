@@ -327,7 +327,7 @@ public class ProfileEditFragment extends Fragment {
                                 country = user.getCountry();
                                 mCity.setText(user.getCity());
                                 progress.dismiss();
-                                //setupSpinners();
+                                setupSpinners();
                                 populateStateDetails(user.getState());
                             }
                         }
