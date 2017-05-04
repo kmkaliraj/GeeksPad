@@ -74,21 +74,6 @@ public class ChatInteractor implements ChatContract.Interactor {
         });
     }
 
-   /* private void sendPushNotificationToReceiver(String username,
-                                                String message,
-                                                String uid,
-                                                String firebaseToken,
-                                                String receiverFirebaseToken) {
-        FcmNotificationBuilder.initialize()
-                .title(username)
-                .message(message)
-                .username(username)
-                .uid(uid)
-                .firebaseToken(firebaseToken)
-                .receiverFirebaseToken(receiverFirebaseToken)
-                .send();
-    } */
-
     @Override
     public void getMessageFromFirebaseUser(String senderEmail, String receiverEmail) {
         final String room_type_1 = senderEmail.replaceAll(".","-") + "_" + receiverEmail.replaceAll(".","-");

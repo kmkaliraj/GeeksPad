@@ -133,11 +133,56 @@ public class SignupActivity extends AppCompatActivity {
 
 
     public void goToSkillsView(User user){
+       if(!ValidateFields())
+           return;
+
         Intent skillsView = new Intent(this, SkillsActivity.class);
         skillsView.putExtra("user",user);
         skillsView.putExtra("email",user.getEmail());
         skillsView.putExtra("password",mPassword.getText().toString());
         startActivity(skillsView);
+    }
+
+    public boolean ValidateFields(){
+       boolean status  = true;
+        if(isEmptyFirstName()){
+            mFirstName.setError("FirstName is required!");
+            status = false;
+        }
+        else if(isEmptyLastName()) {
+            mLastName.setError("FirstName is required!");
+            status = false;
+        }
+        else if(!isValidEmail()) {
+            mEmail.setError("Must enter a valid email");
+            status = false;
+        }
+        else if(!isValidPassword()) {
+            mPassword.setError("Must enter password of minimum 6 character");
+            status = false;
+        }
+        else if(!isValidBirthday()) {
+            mBirthDay.setError("Must enter valid date");
+            status = false;
+        }
+        else if(!isValidCountry()) {
+            TextView errorText = (TextView)mCountry.getSelectedView();
+            errorText.setError("Country is Required");
+            errorText.setTextColor(Color.RED);
+            status = false;
+        }
+        else if(!isValidState()){
+            TextView errorText = (TextView)mState.getSelectedView();
+            errorText.setError("State is Required");
+            errorText.setTextColor(Color.RED);
+            status = false;
+        }
+        else if(!isValidCity()){
+            mCity.setError("Muster a valid city name");
+            status = false;
+        }
+
+        return status;
     }
 
 
@@ -220,32 +265,9 @@ public class SignupActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public User createUser(){
 
-        if(isEmptyFirstName())
-            mFirstName.setError("FirstName is required!");
-        else if(isEmptyLastName())
-            mLastName.setError("FirstName is required!");
-        else if(!isValidEmail())
-            mEmail.setError("Must enter a valid email");
-        else if(!isValidPassword())
-            mPassword.setError("Must enter password of minimum 6 character");
-        else if(!isValidBirthday())
-            mBirthDay.setError("Must enter valid date");
-        else if(!isValidCountry()) {
-            TextView errorText = (TextView)mCountry.getSelectedView();
-            errorText.setError("Country is Required");
-            errorText.setTextColor(Color.RED);
-        }
-        else if(!isValidState()){
-            TextView errorText = (TextView)mState.getSelectedView();
-            errorText.setError("State is Required");
-            errorText.setTextColor(Color.RED);
-        }
-        else if(!isValidCity()){
-            mCity.setError("Muster a valid city name");
-        }
-        else {
+
+    public User createUser(){
 
             mFirstName.setError(null);
             mEmail.setError(null);
@@ -265,7 +287,6 @@ public class SignupActivity extends AppCompatActivity {
 
             if (mCity.getText().toString().length() > 0)
                 user.setCity(mCity.getText().toString());
-        }
 
         LatLng location = AppUtil.getUserLocation(this.getApplicationContext(),user.getCity()+", "+user.getState()+", "+user.getCountry(), 3);
         user.setLatitude(String.valueOf(location.latitude));

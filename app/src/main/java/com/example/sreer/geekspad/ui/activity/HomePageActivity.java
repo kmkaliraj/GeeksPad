@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 import com.example.sreer.geekspad.R;
+import com.example.sreer.geekspad.ui.fragment.ChatUsersListFragment;
 import com.example.sreer.geekspad.ui.fragment.DisplayMapFragment;
 import com.example.sreer.geekspad.ui.fragment.ProfileViewFragment;
 import com.example.sreer.geekspad.ui.fragment.UsersListViewFragment;
@@ -22,6 +23,7 @@ public class HomePageActivity extends AppCompatActivity {
     private ProfileViewFragment userProfile;
     private UsersListViewFragment usersList;
     private DisplayMapFragment usersMap;
+    private ChatUsersListFragment chatView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,12 @@ public class HomePageActivity extends AppCompatActivity {
                 if(!(fragment instanceof DisplayMapFragment)) {
                     usersMap = new DisplayMapFragment();
                     fragmentTransaction.replace(R.id.detailFragment, usersMap);
+                }
+                break;
+            case R.id.menu_chat:
+                if(!(fragment instanceof ChatUsersListFragment)) {
+                    chatView = new ChatUsersListFragment();
+                    fragmentTransaction.replace(R.id.detailFragment, chatView);
                 }
                 break;
         }

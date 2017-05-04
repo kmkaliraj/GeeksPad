@@ -9,7 +9,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -19,6 +18,7 @@ import java.util.List;
 public class FireBaseHelper {
 
     private  GetAllUsersInterface getAllUsersInterface;
+    private getUserByMailInterface getUserByMailInterface;
 
     public FireBaseHelper(){
 
@@ -28,6 +28,9 @@ public class FireBaseHelper {
         this.getAllUsersInterface = getAllUsersInterface;
     }
 
+    public FireBaseHelper(getUserByMailInterface getUserByMailInterface){
+        this.getUserByMailInterface =getUserByMailInterface;
+    }
 
 
 
@@ -94,6 +97,28 @@ public class FireBaseHelper {
         return null;
     }
 
+
+    public void getUserByMail(String email) {
+        String mail = email.replaceAll(".", "-");
+        FirebaseDatabase.getInstance().getReference().
+                child(Constants.ARG_USERS)
+                .child(mail).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    User user = getUserFromSnapShot(dataSnapshot);
+                    getUserByMailInterface.onSuccessGetUserByMail(user);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                getUserByMailInterface.onFailureGetUserByMail();
+            }
+        });
+    }
+
     /**
      * Created by kalirajkalimuthu on 5/3/17.
      */
@@ -102,4 +127,12 @@ public class FireBaseHelper {
         public void onSuccessGetAllUsers(List<User> users);
         public void onFailureGetAllUsers();
     }
+
+    public static interface getUserByMailInterface{
+        public void onSuccessGetUserByMail(User user);
+        public void onFailureGetUserByMail();
+    }
+
+
+
 }
