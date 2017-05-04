@@ -15,14 +15,16 @@ import java.util.Map;
 
 public class User implements Parcelable {
 
-    private String fname;
-    private String lname;
+    private String firstname;
+    private String lastname;
     private String email;
     private String phone;
     private String birthDate;
     private String country;
     private String state;
     private String city;
+    private String latitude;
+    private String longitude;
     private Map<String, Skill> skills;
 
 
@@ -30,49 +32,51 @@ public class User implements Parcelable {
 
     }
 
-    public User(String fname, String email) {
-        this.fname = fname;
+    public User(String firstname, String email) {
+        this.firstname = firstname;
         this.email = email;
 
     }
 
 
-    public User(String fname, String email, String country, String state) {
-        this.fname = fname;
+    public User(String firstname, String email, String country, String state) {
+        this.firstname = firstname;
         this.email = email;
         this.country = country;
-        state = state;
+        this.state = state;
     }
 
     public User(Parcel in){
-        String[] data = new String[8];
+        String[] data = new String[10];
 
         in.readStringArray(data);
         // the order needs to be the same as in writeToParcel() method
-        this.fname = data[0];
-        this.lname = data[1];
+        this.firstname = data[0];
+        this.lastname = data[1];
         this.email = data[2];
         this.phone= data[3];
         this.birthDate = data[4];
         this.country = data[5];
         this.state = data[6];
         this.city = data[7];
+        this.latitude = data[8];
+        this.longitude = data[9];
     }
 
-    public String getFname() {
-        return fname;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFname(String fname) {
-        this.fname = fname;
+    public void setFirstname(String fname) {
+        this.firstname = fname;
     }
 
-    public String getLname() {
-        return lname;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setLname(String lname) {
-        this.lname = lname;
+    public void setLastname(String lname) {
+        this.lastname = lname;
     }
 
     public String getEmail() {
@@ -112,7 +116,7 @@ public class User implements Parcelable {
     }
 
     public void setState(String state) {
-        state = state;
+        this.state = state;
     }
 
     public String getCity() {
@@ -121,6 +125,22 @@ public class User implements Parcelable {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     public Map getSkills() {
@@ -153,14 +173,16 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[] {this.fname,
-                this.lname,
+        dest.writeStringArray(new String[] {this.firstname,
+                this.lastname,
                 this.email,
                 this.phone,
                 this.birthDate,
                 this.country,
                 this.state,
-                this.city});
+                this.city,
+                this.latitude,
+                this.longitude});
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {

@@ -4,13 +4,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,20 +13,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sreer.geekspad.R;
-import com.example.sreer.geekspad.model.Skill;
 import com.example.sreer.geekspad.model.User;
-import com.example.sreer.geekspad.utils.FireBaseHelper;
+import com.example.sreer.geekspad.db.FireBaseHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 public class ProfileViewFragment extends Fragment {
@@ -88,8 +77,8 @@ public class ProfileViewFragment extends Fragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getValue() != null) {
-                            User user = FireBaseHelper.DataProcessor(dataSnapshot);
-                            mProfileLine1.setText(user.getFname()+" "+user.getLname());
+                            User user = FireBaseHelper.getUserFromSnapShot(dataSnapshot);
+                            mProfileLine1.setText(user.getFirstname()+" "+user.getLastname());
                             mProfileLine2.setText("Lives in "+user.getCity()+", "+user.getState()+", "+user.getCountry());
                             progress.dismiss();
                         }

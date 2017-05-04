@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Geekspad.iml" filepath="$PROJECT_DIR$/Geekspad.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GeeksPad.iml" filepath="$PROJECT_DIR$/GeeksPad.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

@@ -4,10 +4,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -26,8 +24,8 @@ import com.example.sreer.geekspad.R;
 import com.example.sreer.geekspad.model.User;
 import com.example.sreer.geekspad.ui.activity.DatePickActivity;
 import com.example.sreer.geekspad.utils.Constants;
-import com.example.sreer.geekspad.utils.FireBaseHelper;
-import com.example.sreer.geekspad.utils.SpinnerUtil;
+import com.example.sreer.geekspad.db.FireBaseHelper;
+import com.example.sreer.geekspad.utils.AppUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -173,7 +171,7 @@ public class ProfileEditFragment extends Fragment {
     public void populateStateDetails(String state){
         states.clear();
         states.add("Select State(None)");
-        states.addAll(SpinnerUtil.getStates(getActivity(),country));
+        states.addAll(AppUtil.getStates(getActivity(),country));
         ArrayAdapter<String> statesAdapter=new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, states);
         statesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mState.setAdapter(statesAdapter);
@@ -277,7 +275,7 @@ public class ProfileEditFragment extends Fragment {
         User user = new User(mFirstName.getText().toString(),mEmail.getText().toString(),country,state);
 
         if(mLastName.getText().toString().length()>0)
-            user.setLname(mLastName.getText().toString());
+            user.setLastname(mLastName.getText().toString());
 
         if(mPhone.getText().toString().length()>0)
             user.setPhone(mPhone.getText().toString());
@@ -310,11 +308,11 @@ public class ProfileEditFragment extends Fragment {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.getValue() != null) {
-                                User user = FireBaseHelper.DataProcessor(dataSnapshot);
+                                User user = FireBaseHelper.getUserFromSnapShot(dataSnapshot);
                                 mCountry.setSelection(getIndex(mCountry,user.getCountry()));
-                                mFirstName.setText(user.getFname());
+                                mFirstName.setText(user.getFirstname());
                                 mBirthDay.setText(user.getBirthDate());
-                                mLastName.setText(user.getLname());
+                                mLastName.setText(user.getLastname());
                                 mEmail.setText(user.getEmail());
                                 mPhone.setText(user.getPhone());
                                 country = user.getCountry();

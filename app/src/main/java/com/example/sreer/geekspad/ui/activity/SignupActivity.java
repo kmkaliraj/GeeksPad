@@ -4,8 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,21 +15,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.example.sreer.geekspad.R;
-import com.example.sreer.geekspad.model.Skill;
-import com.example.sreer.geekspad.model.User;
-import com.example.sreer.geekspad.utils.Constants;
-import com.example.sreer.geekspad.utils.SpinnerUtil;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.Serializable;
+import com.example.sreer.geekspad.R;
+import com.example.sreer.geekspad.model.User;
+import com.example.sreer.geekspad.utils.AppUtil;
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,8 +43,6 @@ public class SignupActivity extends AppCompatActivity {
     private User user;
 
     public ProgressDialog progressDailog;
-    private String country;
-    private String state;
 
     private  List<String> states = new ArrayList<String>(){{
         add("Select State(None)");
@@ -109,8 +96,6 @@ public class SignupActivity extends AppCompatActivity {
         mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                country = (String)adapterView.getAdapter().getItem(position);
-                state = null;
                 populateStateDetails();
             }
 
@@ -123,7 +108,7 @@ public class SignupActivity extends AppCompatActivity {
         mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                state = (String)adapterView.getAdapter().getItem(position);
+
             }
 
             @Override
@@ -213,9 +198,14 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void populateStateDetails(){
+
+        String country = mCountry.getSelectedItem().toString();
         states.clear();
         states.add("Select State(None)");
-        states.addAll(SpinnerUtil.getStates(this,country));
+
+        if(!country.contains("Select"))
+        states.addAll(AppUtil.getStates(this,country));
+
         ArrayAdapter<String> statesAdapter=new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, states);
         statesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mState.setAdapter(statesAdapter);
@@ -236,6 +226,8 @@ public class SignupActivity extends AppCompatActivity {
 
         if(isEmptyFirstName())
             mFirstName.setError("FirstName is required!");
+        else if(isEmptyLastName())
+            mLastName.setError("FirstName is required!");
         else if(!isValidEmail())
             mEmail.setError("Must enter a valid email");
         else if(!isValidPassword())
@@ -252,6 +244,9 @@ public class SignupActivity extends AppCompatActivity {
             errorText.setError("State is Required");
             errorText.setTextColor(Color.RED);
         }
+        else if(!isValidCity()){
+            mCity.setError("Muster a valid city name");
+        }
         else {
 
             mFirstName.setError(null);
@@ -259,9 +254,10 @@ public class SignupActivity extends AppCompatActivity {
             mPassword.setError(null);
             mBirthDay.setError(null);
 
-            user = new User(mFirstName.getText().toString(), mEmail.getText().toString(), country, state);
+            user = new User(mFirstName.getText().toString(), mEmail.getText().toString(),
+                    mCountry.getSelectedItem().toString(), mState.getSelectedItem().toString());
             if (mLastName.getText().toString().length() > 0)
-                user.setFname(mLastName.getText().toString());
+                user.setLastname(mLastName.getText().toString());
 
             if (mPhone.getText().toString().length() > 0)
                 user.setPhone(mPhone.getText().toString());
@@ -273,6 +269,10 @@ public class SignupActivity extends AppCompatActivity {
                 user.setCity(mCity.getText().toString());
         }
 
+        LatLng location = AppUtil.getUserLocation(this.getApplicationContext(),user.getCity()+", "+user.getState()+", "+user.getCountry(), 3);
+        user.setLatitude(String.valueOf(location.latitude));
+        user.setLongitude(String.valueOf(location.longitude));
         return user;
     }
+
 }
