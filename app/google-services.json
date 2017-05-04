@@ -13,23 +13,10 @@
           "package_name": "com.example.sreer.geekspad"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "67676739612-j4cj7qpepenjssco1aqmfddlbc8c870h.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.sreer.geekspad",
-            "certificate_hash": "d216851d94fe5849c73c3bf882c54d298ef719a2"
-          }
-        },
-        {
-          "client_id": "67676739612-l3cgu8jbhadkl1hfaoaj1343pk452ulq.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD6GkbKku1mIewXK9vzIz2OdkQyGa3T91E"
+          "current_key": "AIzaSyCAGs6ifa5SYfJ9SCCgJlM8gRKx3jnVv90"
         }
       ],
       "services": {
@@ -37,13 +24,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "67676739612-l3cgu8jbhadkl1hfaoaj1343pk452ulq.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

@@ -109,7 +109,7 @@ public class DisplayMapFragment extends Fragment implements OnMapReadyCallback,F
         }
 
     public void addMarker(User user){
-        LatLng point = new LatLng(parseFloat(user.getLatitude()),parseFloat(user.getLatitude()));
+        LatLng point = new LatLng(parseFloat(user.getLatitude()),parseFloat(user.getLongitude()));
         MarkerOptions marker = new MarkerOptions() .position(point);
         mMap.addMarker(marker.title(user.getFirstname()));
         CameraUpdate newLocation = CameraUpdateFactory.newLatLngZoom(point, 6);
