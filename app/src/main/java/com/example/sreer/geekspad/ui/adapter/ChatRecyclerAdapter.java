@@ -53,7 +53,7 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (TextUtils.equals(mChats.get(position).senderMail,
-                FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
             configureMyChatViewHolder((MyChatViewHolder) holder, position);
         } else {
             configureOtherChatViewHolder((OtherChatViewHolder) holder, position);

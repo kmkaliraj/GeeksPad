@@ -163,7 +163,7 @@ public class User implements Parcelable {
         }
     }
     public String cleanEmailAddress(){
-        return this.email.replace(".","-");
+        return this.email.replaceAll("\\.", "-");
     }
 
     @Override

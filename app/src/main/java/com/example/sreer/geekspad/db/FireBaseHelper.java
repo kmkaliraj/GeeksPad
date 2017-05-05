@@ -16,7 +16,6 @@ import java.util.List;
  */
 
 public class FireBaseHelper {
-
     private  GetAllUsersInterface getAllUsersInterface;
     private getUserByMailInterface getUserByMailInterface;
 
@@ -99,7 +98,7 @@ public class FireBaseHelper {
 
 
     public void getUserByMail(String email) {
-        String mail = email.replaceAll(".", "-");
+        String mail = email.replaceAll("\\.", "-");
         FirebaseDatabase.getInstance().getReference().
                 child(Constants.ARG_USERS)
                 .child(mail).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -109,7 +108,6 @@ public class FireBaseHelper {
                     User user = getUserFromSnapShot(dataSnapshot);
                     getUserByMailInterface.onSuccessGetUserByMail(user);
                 }
-
             }
 
             @Override

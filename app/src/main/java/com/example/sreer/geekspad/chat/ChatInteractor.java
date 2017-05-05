@@ -39,8 +39,8 @@ public class ChatInteractor implements ChatContract.Interactor {
 
     @Override
     public void sendMessageToFirebaseUser(final Context context, final Chat chat) {
-        final String room_type_1 = chat.senderMail.replaceAll(".","-") + "_" + chat.receiverMail.replaceAll(".","-");
-        final String room_type_2 = chat.receiverMail.replaceAll(".","-") + "_" + chat.senderMail.replaceAll(".","-");
+        final String room_type_1 = chat.senderMail.replaceAll("\\.", "-") + "_" + chat.receiverMail.replaceAll("\\.", "-");
+        final String room_type_2 = chat.receiverMail.replaceAll("\\.", "-") + "_" + chat.senderMail.replaceAll("\\.", "-");
 
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -56,7 +56,7 @@ public class ChatInteractor implements ChatContract.Interactor {
                 } else {
                     Log.e(TAG, "sendMessageToFirebaseUser: success");
                     databaseReference.child(Constants.ARG_CHAT_ROOMS).child(room_type_1).child(String.valueOf(chat.timestamp)).setValue(chat);
-                    getMessageFromFirebaseUser(chat.senderMail.replaceAll(".","-"), chat.receiverMail.replaceAll(".","-"));
+                    getMessageFromFirebaseUser(chat.senderMail.replaceAll("\\.", "-"), chat.receiverMail.replaceAll("\\.", "-"));
                 }
                 // send push notification to the receiver
                /* sendPushNotificationToReceiver(chat.sender,
@@ -76,8 +76,8 @@ public class ChatInteractor implements ChatContract.Interactor {
 
     @Override
     public void getMessageFromFirebaseUser(String senderEmail, String receiverEmail) {
-        final String room_type_1 = senderEmail.replaceAll(".","-") + "_" + receiverEmail.replaceAll(".","-");
-        final String room_type_2 = receiverEmail.replaceAll(".","-") + "_" + senderEmail.replaceAll(".","-");
+        final String room_type_1 = senderEmail.replaceAll("\\.", "-") + "_" + receiverEmail.replaceAll("\\.", "-");
+        final String room_type_2 = receiverEmail.replaceAll("\\.", "-") + "_" + senderEmail.replaceAll("\\.", "-");
 
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -158,5 +158,8 @@ public class ChatInteractor implements ChatContract.Interactor {
                 mOnGetMessagesListener.onGetMessagesFailure("Unable to get message: " + databaseError.getMessage());
             }
         });
+
     }
+
+
 }

@@ -25,8 +25,8 @@ public class ChatPresenter implements ChatContract.Presenter, ChatContract.OnSen
     }
 
     @Override
-    public void getMessage(String senderUid, String receiverUid) {
-        mChatInteractor.getMessageFromFirebaseUser(senderUid, receiverUid);
+    public void getMessage(String senderEmail, String receiverEmail) {
+        mChatInteractor.getMessageFromFirebaseUser(senderEmail, receiverEmail);
     }
 
     @Override

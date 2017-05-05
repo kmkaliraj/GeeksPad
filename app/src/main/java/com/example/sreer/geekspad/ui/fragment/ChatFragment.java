@@ -92,22 +92,17 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle("Chat with "+getArguments().getString(Constants.ARG_RECEIVER));
+        fireBaseHelper = new FireBaseHelper(ChatFragment.this);
         init();
     }
 
     private void init() {
-        fireBaseHelper = new FireBaseHelper(ChatFragment.this);
         initCurrentUser();
-        mProgressDialog = new ProgressDialog(getActivity());
-        mProgressDialog.setTitle("Loading");
-        mProgressDialog.setMessage("Please Wait");
-        mProgressDialog.setIndeterminate(true);
-
         mETxtMessage.setOnEditorActionListener(this);
 
         mChatPresenter = new ChatPresenter(this);
-        mChatPresenter.getMessage(FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                getArguments().getString(Constants.ARG_RECEIVER_UID));
+        mChatPresenter.getMessage(FirebaseAuth.getInstance().getCurrentUser().getEmail(),
+                getArguments().getString(Constants.ARG_RECEIVER_MAIL));
         mSendButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -119,11 +114,10 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
         mRecyclerViewChat.setLayoutManager(mLayoutManager);
         mRecyclerViewChat.setItemAnimator(new DefaultItemAnimator());
 
-
     }
 
     public void initCurrentUser(){
-
+        fireBaseHelper.getUserByMail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
     }
 
     @Override
@@ -141,7 +135,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
             return;
         String receiver = getArguments().getString(Constants.ARG_RECEIVER);
         String receiverMail = getArguments().getString(Constants.ARG_RECEIVER_MAIL);
-
         Chat chat = new Chat(currentUser,
                 receiver,
                 currentUserMail,

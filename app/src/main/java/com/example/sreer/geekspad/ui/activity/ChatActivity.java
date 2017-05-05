@@ -1,5 +1,6 @@
 package com.example.sreer.geekspad.ui.activity;
 
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,9 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void init() {
+        //  mToolbar.setTitle(getIntent().getExtras().getString(Constants.ARG_RECEIVER_UID));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // set the register screen fragment
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout_content_chat,
                 ChatFragment.newInstance(getIntent().getExtras().getString(Constants.ARG_RECEIVER),
