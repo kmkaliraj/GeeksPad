@@ -78,7 +78,7 @@
             android:layout_height="30dp"
             android:layout_above="@+id/informations_container"
             android:layout_alignParentEnd="true"
-            android:layout_marginBottom="-45dp"
+            android:layout_marginBottom="-85dp"
             android:layout_marginEnd="10dp"
             android:clickable="true"
             android:src="@android:drawable/ic_menu_call" />
@@ -89,7 +89,7 @@
             android:layout_height="30dp"
             android:layout_above="@+id/informations_container"
             android:layout_alignParentEnd="true"
-            android:layout_marginBottom="-85dp"
+            android:layout_marginBottom="-45dp"
             android:layout_marginEnd="10dp"
             android:clickable="true"
             android:src="@android:drawable/sym_action_chat" />
