@@ -102,6 +102,8 @@ public class ProfileViewFragment extends Fragment {
                             mProfileLine3.setText("Email: "+user.getEmail());
                             phone = user.getPhone();
                             displaySkills(user);
+                            if(phone == null)
+                                mPhoneIcon.setVisibility(View.INVISIBLE);
                             mProgress.dismiss();
                         }
                     }

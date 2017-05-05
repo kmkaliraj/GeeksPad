@@ -114,6 +114,5 @@ public class UsersListViewFragment extends Fragment implements ItemClickSupport.
         Intent userProfile = new Intent(getActivity(), ProfileActivity.class);
         userProfile.putExtra("email",emailKey);
         startActivity(userProfile);
-
     }
 }
