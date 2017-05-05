@@ -140,6 +140,7 @@ public class SignupActivity extends AppCompatActivity {
         skillsView.putExtra("user",user);
         skillsView.putExtra("email",user.getEmail());
         skillsView.putExtra("password",mPassword.getText().toString());
+        skillsView.putExtra("ForEdit",false);
         startActivity(skillsView);
     }
 
@@ -265,9 +266,31 @@ public class SignupActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
     public User createUser(){
+        if(isEmptyFirstName())
+            mFirstName.setError("FirstName is required!");
+        else if(isEmptyLastName())
+            mLastName.setError("FirstName is required!");
+        else if(!isValidEmail())
+            mEmail.setError("Must enter a valid email");
+        else if(!isValidPassword())
+            mPassword.setError("Must enter password of minimum 6 character");
+        else if(!isValidBirthday())
+            mBirthDay.setError("Must enter valid date");
+        else if(!isValidCountry()) {
+            TextView errorText = (TextView)mCountry.getSelectedView();
+            errorText.setError("Country is Required");
+            errorText.setTextColor(Color.RED);
+        }
+        else if(!isValidState()){
+            TextView errorText = (TextView)mState.getSelectedView();
+            errorText.setError("State is Required");
+            errorText.setTextColor(Color.RED);
+        }
+        else if(!isValidCity()){
+            mCity.setError("Muster a valid city name");
+        }
+        else {
 
             mFirstName.setError(null);
             mEmail.setError(null);
@@ -288,9 +311,10 @@ public class SignupActivity extends AppCompatActivity {
             if (mCity.getText().toString().length() > 0)
                 user.setCity(mCity.getText().toString());
 
-        LatLng location = AppUtil.getUserLocation(this.getApplicationContext(),user.getCity()+", "+user.getState()+", "+user.getCountry(), 3);
-        user.setLatitude(String.valueOf(location.latitude));
-        user.setLongitude(String.valueOf(location.longitude));
+            LatLng location = AppUtil.getUserLocation(this.getApplicationContext(), user.getCity() + ", " + user.getState() + ", " + user.getCountry(), 3);
+            user.setLatitude(String.valueOf(location.latitude));
+            user.setLongitude(String.valueOf(location.longitude));
+        }
         return user;
     }
 

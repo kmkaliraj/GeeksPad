@@ -1,6 +1,6 @@
 package com.example.sreer.geekspad.ui.fragment;
 
-import android.app.Fragment;
+
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,9 +26,11 @@ import android.widget.Toast;
 import com.example.sreer.geekspad.R;
 import com.example.sreer.geekspad.model.User;
 import com.example.sreer.geekspad.ui.activity.DatePickActivity;
+import com.example.sreer.geekspad.ui.activity.SkillsActivity;
 import com.example.sreer.geekspad.utils.Constants;
 import com.example.sreer.geekspad.db.FireBaseHelper;
 import com.example.sreer.geekspad.utils.AppUtil;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,7 +49,7 @@ import static com.google.android.gms.R.color.common_google_signin_btn_text_light
 
 
 public class ProfileEditFragment extends Fragment {
-    private Button mSave;
+    private Button mAddSkills;
     private EditText mFirstName;
     private EditText mLastName;
     private EditText mEmail;
@@ -83,7 +86,7 @@ public class ProfileEditFragment extends Fragment {
         mUserRefDatabase = FirebaseDatabase.getInstance().getReference().child("users");
         mAuth = FirebaseAuth.getInstance();
         progress = new ProgressDialog(getActivity());
-        mSave = (Button) view.findViewById(R.id.btn_add_skills);
+        mAddSkills = (Button) view.findViewById(R.id.btn_add_skills);
         mFirstName = (EditText) view.findViewById(R.id.fname);
         mLastName = (EditText) view.findViewById(R.id.lname);
         mPassword = (EditText) view.findViewById(R.id.input_password);
@@ -99,7 +102,8 @@ public class ProfileEditFragment extends Fragment {
         mPasswordText.setVisibility(View.GONE);
         mEmail.setTag(mEmail.getKeyListener());
         mEmail.setKeyListener(null);
-        mEmail.setBackgroundColor(getResources().getColor(common_google_signin_btn_text_light_disabled));
+        mEmail.setEnabled(false);
+        mAddSkills.setText("Edit Skills");
         return view;
     }
 
@@ -110,17 +114,24 @@ public class ProfileEditFragment extends Fragment {
         populateCountryData();
         progress.setMessage("Loading...");
         progress.show();
-        getUserInfo();
+//        Bundle data = getActivity().getIntent().getExtras();
+//        if(data!=null) {
+//            User editedUserInfo = (User) data.getParcelable("user");
+//            restoreValues(editedUserInfo);
+//        }
+//        else
+            getUserInfo();
         mCalendarLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setBirthday();
             }
         });
-        mSave.setOnClickListener(new View.OnClickListener() {
+        mAddSkills.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postUserDetails();
+                User user = createUser();
+                goToSkills(user);
             }
         });
 
@@ -131,8 +142,7 @@ public class ProfileEditFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 country = (String)adapterView.getAdapter().getItem(position);
-                state = null;
-                populateStateDetails(null);
+                populateStateDetails();
             }
 
             @Override
@@ -177,43 +187,20 @@ public class ProfileEditFragment extends Fragment {
 
     }
 
-    public void populateStateDetails(String state){
+    public void populateStateDetails(){
         states.clear();
         states.add("Select State(None)");
         states.addAll(AppUtil.getStates(getActivity(),country));
         ArrayAdapter<String> statesAdapter=new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, states);
         statesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mState.setAdapter(statesAdapter);
-        if(state != null )
-            mState.setSelection(getIndex(mState,state));
-
+        if(state != null ) {
+            mState.setSelection(getIndex(mState, state));
+            state = null;
+        }
     }
 
-    public void postUserDetails(){
 
-        if(isEmptyFirstName())
-            mFirstName.setError("FirstName is required!");
-        else if(!isValidEmail())
-            mEmail.setError("Must enter a valid email");
-        else if(!isValidPassword())
-            mPassword.setError("Must enter password of minimum 6 character");
-        else if(!isValidBirthday())
-            mBirthDay.setError("Must enter valid date");
-        else if(!isValidCountry()) {
-            TextView errorText = (TextView)mCountry.getSelectedView();
-            errorText.setError("Country is Required");
-            errorText.setTextColor(Color.RED);
-        }
-        else if(!isValidState()){
-            TextView errorText = (TextView)mState.getSelectedView();
-            errorText.setError("State is Required");
-            errorText.setTextColor(Color.RED);
-        }
-        else {
-            updateUserInFirebase(mAuth.getCurrentUser());
-        }
-
-    }
 
     public boolean isValidEmail(){
         String email = mEmail.getText().toString().trim();
@@ -253,57 +240,64 @@ public class ProfileEditFragment extends Fragment {
         return !(mState.getSelectedItem().toString().contains("none"));
     }
 
-    public void updateUserInFirebase(FirebaseUser firebaseuser){
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        User user = createUser();
-
-        try {
-            database.child(Constants.ARG_USERS)
-                    .child(user.cleanEmailAddress())
-                    .setValue(user)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                goToProfile();
-                            } else {
-                                Toast.makeText(getActivity().getApplicationContext(), "Adding user details to firebase failed",
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }
 
     public User createUser(){
-        User user = new User(mFirstName.getText().toString(),mEmail.getText().toString(),country,state);
+        User user = null;
+        if(isEmptyFirstName())
+            mFirstName.setError("FirstName is required!");
+        else if(isEmptyLastName())
+            mLastName.setError("FirstName is required!");
+        else if(!isValidEmail())
+            mEmail.setError("Must enter a valid email");
+        else if(!isValidBirthday())
+            mBirthDay.setError("Must enter valid date");
+        else if(!isValidCountry()) {
+            TextView errorText = (TextView)mCountry.getSelectedView();
+            errorText.setError("Country is Required");
+            errorText.setTextColor(Color.RED);
+        }
+        else if(!isValidState()){
+            TextView errorText = (TextView)mState.getSelectedView();
+            errorText.setError("State is Required");
+            errorText.setTextColor(Color.RED);
+        }
+        else if(!isValidCity()){
+            mCity.setError("Must enter a valid city name");
+        }
+        else {
 
-        if(mLastName.getText().toString().length()>0)
-            user.setLastname(mLastName.getText().toString());
+            mFirstName.setError(null);
+            mEmail.setError(null);
+            mPassword.setError(null);
+            mBirthDay.setError(null);
 
-        if(mPhone.getText().toString().length()>0)
-            user.setPhone(mPhone.getText().toString());
+            user = new User(mFirstName.getText().toString(), mEmail.getText().toString(),
+                    mCountry.getSelectedItem().toString(), mState.getSelectedItem().toString());
+            if (mLastName.getText().toString().length() > 0)
+                user.setLastname(mLastName.getText().toString());
 
-        if(mBirthDay.getText().toString().length()>0)
-            user.setBirthDate(mBirthDay.getText().toString());
+            if (mPhone.getText().toString().length() > 0)
+                user.setPhone(mPhone.getText().toString());
 
-        if(mCity.getText().toString().length()> 0)
-            user.setCity(mCity.getText().toString());
+            if (mBirthDay.getText().toString().length() > 0)
+                user.setBirthDate(mBirthDay.getText().toString());
 
+            if (mCity.getText().toString().length() > 0)
+                user.setCity(mCity.getText().toString());
+        }
+
+        LatLng location = AppUtil.getUserLocation(getActivity().getApplication(),user.getCity()+", "+user.getState()+", "+user.getCountry(), 3);
+        user.setLatitude(String.valueOf(location.latitude));
+        user.setLongitude(String.valueOf(location.longitude));
         return user;
     }
 
-    public void goToProfile(){
-        FragmentManager fragments = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragments.beginTransaction();
-        ProfileViewFragment profile = new ProfileViewFragment();
-        fragmentTransaction.replace(R.id.detailFragment, profile);
-        fragmentTransaction.commit();
+    public void goToSkills(User user){
+        Intent skillsView = new Intent(getActivity(), SkillsActivity.class);
+        skillsView.putExtra("user",user);
+        skillsView.putExtra("email",user.getEmail());
+        skillsView.putExtra("ForEdit",true);
+        startActivity(skillsView);
     }
 
     public void getUserInfo() {
@@ -319,16 +313,17 @@ public class ProfileEditFragment extends Fragment {
                             if (dataSnapshot.getValue() != null) {
                                 User user = FireBaseHelper.getUserFromSnapShot(dataSnapshot);
                                 mCountry.setSelection(getIndex(mCountry,user.getCountry()));
+                                country = user.getCountry();
                                 mFirstName.setText(user.getFirstname());
                                 mBirthDay.setText(user.getBirthDate());
                                 mLastName.setText(user.getLastname());
                                 mEmail.setText(user.getEmail());
                                 mPhone.setText(user.getPhone());
-                                country = user.getCountry();
                                 mCity.setText(user.getCity());
-                                progress.dismiss();
+                                state=user.getState();
                                 setupSpinners();
-                                populateStateDetails(user.getState());
+                                progress.dismiss();
+
                             }
                         }
 
@@ -353,5 +348,18 @@ public class ProfileEditFragment extends Fragment {
         }
         return index;
     }
+
+//    public void restoreValues(User user){
+//        mCountry.setSelection(getIndex(mCountry,user.getCountry()));
+//        mFirstName.setText(user.getFirstname());
+//        mBirthDay.setText(user.getBirthDate());
+//        mLastName.setText(user.getLastname());
+//        mEmail.setText(user.getEmail());
+//        mPhone.setText(user.getPhone());
+//        country = user.getCountry();
+//        mCity.setText(user.getCity());
+//        progress.dismiss();
+//        state=user.getState();
+//    }
 
 }
