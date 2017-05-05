@@ -23,17 +23,5 @@
             android:paddingBottom="10dp"/>
         -->
     </LinearLayout>
-
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary"
-        app:itemIconTint="@drawable/menu_selector"
-        app:itemTextColor="@drawable/menu_selector"
-        app:menu="@menu/bottom_navigation_menu" />
-
 </LinearLayout>
 
