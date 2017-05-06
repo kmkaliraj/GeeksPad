@@ -44,8 +44,8 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
                 mUserLocation.setText(user.getCountry() + " | " + user.getState() + " | " + user.getCity());
             }
             else{
-                mUserName.setText("Details Not Available");
-                mUserLocation.setText("Details Not Available");
+                mUserName.setText("Details Unavailable");
+                mUserLocation.setText("Details Unavailable");
             }
         }
         return (v);

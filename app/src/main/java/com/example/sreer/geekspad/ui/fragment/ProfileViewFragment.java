@@ -108,8 +108,8 @@ public class ProfileViewFragment extends Fragment {
                             displaySkills(user);
                             if(phone == null)
                                 mPhoneIcon.setVisibility(View.INVISIBLE);
-                            mProgress.dismiss();
                             profileOwner = user;
+                            mProgress.dismiss();
                         }
                     }
 
