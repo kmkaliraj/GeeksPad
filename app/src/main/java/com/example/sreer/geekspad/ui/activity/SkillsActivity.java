@@ -66,7 +66,7 @@ public class SkillsActivity extends AppCompatActivity {
                 setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         progressDailog.setCancelable(false);
 
-        Button btn_register = (Button) findViewById(R.id.btn_register);
+      /*  Button btn_register = (Button) findViewById(R.id.btn_register);
         if(isEdit)
             btn_register.setText("Update");
 
@@ -75,7 +75,7 @@ public class SkillsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 registerUser();
             }
-        });
+        }); */
     }
 
     public void registerUser(){

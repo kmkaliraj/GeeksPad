@@ -34,7 +34,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void init() {
         //  mToolbar.setTitle(getIntent().getExtras().getString(Constants.ARG_RECEIVER_UID));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // set the register screen fragment
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout_content_chat,
