@@ -17,7 +17,6 @@
     <TextView
         android:id="@+id/fullname"
         android:textSize="18sp"
-        android:text="line1"
         android:textColor="@android:color/black"
         android:textStyle="bold"
         android:layout_alignParentLeft="true"
@@ -31,7 +30,6 @@
     <TextView
         android:id="@+id/locationdetail"
         android:layout_below="@id/fullname"
-        android:text="line2"
         android:textSize="15sp"
         android:layout_marginLeft="75dp"
         android:layout_alignParentLeft="true"

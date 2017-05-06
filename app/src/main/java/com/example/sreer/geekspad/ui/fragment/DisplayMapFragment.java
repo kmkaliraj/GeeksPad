@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import com.example.sreer.geekspad.R;
 import com.example.sreer.geekspad.db.FireBaseHelper;
 import com.example.sreer.geekspad.model.User;
+import com.example.sreer.geekspad.ui.adapter.CustomInfoWindowAdapter;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -51,6 +52,7 @@ public class DisplayMapFragment extends Fragment implements OnMapReadyCallback,F
 
     private List<User> usersList = new ArrayList<User>();
     private FireBaseHelper fireBaseHelper;
+    private LayoutInflater inflater;
 
     private GoogleMap mMap;
 
@@ -79,6 +81,7 @@ public class DisplayMapFragment extends Fragment implements OnMapReadyCallback,F
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.display_map_fragment, container, false);
+        this.inflater = inflater;
         return view;
     }
 
@@ -112,6 +115,7 @@ public class DisplayMapFragment extends Fragment implements OnMapReadyCallback,F
 
     public void markUsers(List<User> users){
         mMap.clear();
+        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(inflater,users));
         for(User user: users){
             addMarker(user);
         }
