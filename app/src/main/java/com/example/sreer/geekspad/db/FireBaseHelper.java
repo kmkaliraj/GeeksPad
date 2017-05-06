@@ -3,6 +3,7 @@ package com.example.sreer.geekspad.db;
 import com.example.sreer.geekspad.model.Skill;
 import com.example.sreer.geekspad.model.User;
 import com.example.sreer.geekspad.utils.Constants;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -81,8 +82,11 @@ public class FireBaseHelper {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<User> allUsers = new ArrayList<User>();
                 if (dataSnapshot.getValue() != null) {
-                   for(DataSnapshot userDataSnapshot: dataSnapshot.getChildren())
-                       allUsers.add(getUserFromSnapShot(userDataSnapshot));
+                   for(DataSnapshot userDataSnapshot: dataSnapshot.getChildren()) {
+                       User user = getUserFromSnapShot(userDataSnapshot);
+                       if(!FirebaseAuth.getInstance().getCurrentUser().getEmail().equals(user.getEmail()))
+                       allUsers.add(user);
+                   }
                     getAllUsersInterface.onSuccessGetAllUsers(allUsers);
                 }
             }
