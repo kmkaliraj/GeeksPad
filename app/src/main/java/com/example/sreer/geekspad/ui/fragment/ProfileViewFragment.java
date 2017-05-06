@@ -19,8 +19,10 @@ import com.example.sreer.geekspad.R;
 import com.example.sreer.geekspad.db.FireBaseHelper;
 import com.example.sreer.geekspad.model.Skill;
 import com.example.sreer.geekspad.model.User;
+import com.example.sreer.geekspad.ui.activity.ChatActivity;
 import com.example.sreer.geekspad.ui.activity.ProfileEditActivity;
 import com.example.sreer.geekspad.ui.adapter.SkillSetRecyclerAdapter;
+import com.example.sreer.geekspad.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,13 +36,14 @@ import java.util.List;
 
 public class ProfileViewFragment extends Fragment {
     private TextView mProfileLine1, mProfileLine2, mProfileLine3;
-    private ImageView mEditIcon, mPhoneIcon;
+    private ImageView mEditIcon, mPhoneIcon , mChatIcon;
     private FirebaseAuth mAuth;
     private DatabaseReference mUserRefDatabase;
     private ProgressDialog mProgress;
     private RecyclerView mSkills;
     private Boolean isView = false;
     private String emailKey,phone;
+    private User profileOwner;
 
 
     public ProfileViewFragment() {
@@ -62,6 +65,7 @@ public class ProfileViewFragment extends Fragment {
         mProgress = new ProgressDialog(getActivity());
         mSkills = (RecyclerView) view.findViewById(R.id.recycler_profile_skills);
         mPhoneIcon = (ImageView) view.findViewById(R.id.imageView_phone_icon);
+        mChatIcon = (ImageView) view.findViewById(R.id.imageView_chat_icon);
         return view;
     }
 
@@ -102,6 +106,9 @@ public class ProfileViewFragment extends Fragment {
                             mProfileLine3.setText("Email: "+user.getEmail());
                             phone = user.getPhone();
                             displaySkills(user);
+                            if(phone == null)
+                                mPhoneIcon.setVisibility(View.INVISIBLE);
+                            profileOwner = user;
                             mProgress.dismiss();
                         }
                     }
@@ -130,6 +137,7 @@ public class ProfileViewFragment extends Fragment {
 
     public void setupPhoneDetails(){
         mPhoneIcon.setVisibility(View.VISIBLE);
+        mChatIcon.setVisibility(View.VISIBLE);
         mEditIcon.setVisibility(View.INVISIBLE);
         mPhoneIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,10 +151,20 @@ public class ProfileViewFragment extends Fragment {
                     Toast.makeText(getActivity(),"Phone Details not available",Toast.LENGTH_SHORT);
             }
         });
+        mChatIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra(Constants.ARG_RECEIVER, profileOwner.getFirstname()+" "+profileOwner.getLastname());
+                intent.putExtra(Constants.ARG_RECEIVER_MAIL,profileOwner.getEmail());
+                startActivity(intent);
+            }
+        });
     }
 
     public void setupEdit(){
         mPhoneIcon.setVisibility(View.INVISIBLE);
+        mChatIcon.setVisibility(View.INVISIBLE);
         mEditIcon.setVisibility(View.VISIBLE);
         mEditIcon.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import com.example.sreer.geekspad.R;
 import com.example.sreer.geekspad.db.FireBaseHelper;
 import com.example.sreer.geekspad.model.User;
+import com.example.sreer.geekspad.ui.activity.ProfileActivity;
+import com.example.sreer.geekspad.ui.adapter.CustomInfoWindowAdapter;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -51,6 +53,7 @@ public class DisplayMapFragment extends Fragment implements OnMapReadyCallback,F
 
     private List<User> usersList = new ArrayList<User>();
     private FireBaseHelper fireBaseHelper;
+    private LayoutInflater inflater;
 
     private GoogleMap mMap;
 
@@ -79,6 +82,7 @@ public class DisplayMapFragment extends Fragment implements OnMapReadyCallback,F
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.display_map_fragment, container, false);
+        this.inflater = inflater;
         return view;
     }
 
@@ -104,7 +108,7 @@ public class DisplayMapFragment extends Fragment implements OnMapReadyCallback,F
     public void addMarker(User user){
         LatLng point = new LatLng(parseDouble(user.getLatitude()),parseDouble(user.getLongitude()));
         MarkerOptions marker = new MarkerOptions() .position(point);
-        mMap.addMarker(marker.title(user.getFirstname()));
+        mMap.addMarker(marker.title(user.getEmail()));
         CameraUpdate newLocation = CameraUpdateFactory.newLatLngZoom(point, 6);
         mMap.moveCamera(newLocation);
 
@@ -112,6 +116,17 @@ public class DisplayMapFragment extends Fragment implements OnMapReadyCallback,F
 
     public void markUsers(List<User> users){
         mMap.clear();
+        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(inflater,users));
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                User user = new User();
+                user.setEmail(marker.getTitle());
+                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                intent.putExtra("email",user.cleanEmailAddress());
+                startActivity(intent);
+            }
+        });
         for(User user: users){
             addMarker(user);
         }

@@ -195,5 +195,14 @@ public class User implements Parcelable {
         }
     };
 
+    public static User findUser(List<User> users, String title){
+        User user = null;
+        for(User userItem: users)
+            if(userItem.getEmail().equals(title)) {
+                return userItem;
+            }
+        return user;
+    }
+
 
 }

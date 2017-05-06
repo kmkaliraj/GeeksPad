@@ -11,12 +11,13 @@ import com.example.sreer.geekspad.ui.fragment.ProfileEditFragment;
 import com.example.sreer.geekspad.ui.fragment.ProfileViewFragment;
 
 public class ProfileActivity extends AppCompatActivity {
+    private Bundle data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        Bundle data = getIntent().getExtras();
+        data = getIntent().getExtras();
         FragmentManager fragments = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragments.beginTransaction();
         ProfileViewFragment profileView = new ProfileViewFragment();
@@ -28,7 +29,11 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(this, LoginActivity.class)); //Go back to home page
-        finish();
+        if(data == null) {
+            startActivity(new Intent(this, LoginActivity.class)); //Go back to home page
+            finish();
+        }
+        else
+            finish();
     }
 }
