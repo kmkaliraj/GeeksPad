@@ -31,8 +31,7 @@
             android:text="Register"
             android:background="@android:color/holo_blue_light"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:visibility="invisible"/>
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
 
