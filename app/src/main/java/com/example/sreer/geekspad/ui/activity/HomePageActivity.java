@@ -83,7 +83,6 @@ public class HomePageActivity extends AppCompatActivity {
                 break;
         }
 
-        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
@@ -116,4 +115,11 @@ public class HomePageActivity extends AppCompatActivity {
         finish();
         Toast.makeText(this, "Logged Out Successfully" , Toast.LENGTH_LONG).show();
     }
+
+
+    public void profileRecall(){
+
+    }
+
+
 }

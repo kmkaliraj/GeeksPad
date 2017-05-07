@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.IntentCompat;
@@ -51,6 +52,8 @@ public class SkillsActivity extends AppCompatActivity {
             setTitle("Skills");
             Bundle data = getIntent().getExtras();
             isEdit = data.getBoolean("ForEdit");
+            if(isEdit)
+                editUserInfo = (User)data.getParcelable("user");
             FragmentManager fragments = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragments.beginTransaction();
             skillsViewFragment = new SkillsViewFragment();
@@ -82,7 +85,6 @@ public class SkillsActivity extends AppCompatActivity {
         progressDailog.show();
         Bundle data = getIntent().getExtras();
         User user = (User)data.getParcelable("user");
-        editUserInfo = (User)data.getParcelable("user");
         String email =  data.getString("email");
         String password = data.getString("password");
         addSkillstoUser(user);
@@ -168,13 +170,17 @@ public class SkillsActivity extends AppCompatActivity {
     }
 
     public void goToProfile(){
-        Intent intent = new Intent(this, ProfileActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        ActivityCompat.finishAffinity(this);
-
+        Intent goToProfile = getIntent();
+        setResult(RESULT_OK,goToProfile);
+        finish();
     }
 
-
+//    @Override
+//    public void onBackPressed(){
+//        Intent intent = new Intent(this, ProfileEditActivity.class);
+//        intent.putExtra("user", editUserInfo);
+//        startActivity(intent);
+//        finish();
+//    }
 
 }

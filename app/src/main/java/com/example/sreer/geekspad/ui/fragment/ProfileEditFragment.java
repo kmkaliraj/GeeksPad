@@ -44,6 +44,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static com.google.android.gms.R.color.common_google_signin_btn_text_light_disabled;
 
@@ -66,6 +67,7 @@ public class ProfileEditFragment extends Fragment {
     private String state;
     private ProgressDialog progress;
     private DatabaseReference mUserRefDatabase;
+    private final static int SKILL_EDIT = 1;
     private List<String> countries = new ArrayList<String>(){{
         add("Select Country(None)");
     }};
@@ -114,12 +116,12 @@ public class ProfileEditFragment extends Fragment {
         populateCountryData();
         progress.setMessage("Loading...");
         progress.show();
-//        Bundle data = getActivity().getIntent().getExtras();
-//        if(data!=null) {
-//            User editedUserInfo = (User) data.getParcelable("user");
-//            restoreValues(editedUserInfo);
-//        }
-//        else
+        Bundle data = getActivity().getIntent().getExtras();
+        if(data!=null) {
+            User editedUserInfo = (User) data.getParcelable("user");
+            restoreValues(editedUserInfo);
+        }
+        else
             getUserInfo();
         mCalendarLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,6 +177,18 @@ public class ProfileEditFragment extends Fragment {
         if (requestCode == 1 && resultCode == RESULT_OK){
             String birth_day = data.getStringExtra("date");
             mBirthDay.setText(birth_day);
+        }
+
+        if(requestCode == SKILL_EDIT){
+            switch (resultCode) {
+                case RESULT_OK:
+                    Intent goToProfile = getActivity().getIntent();
+                    getActivity().setResult(RESULT_OK,goToProfile);
+                    getActivity().finish();
+                    break;
+                case RESULT_CANCELED:
+                    break;
+            }
         }
     }
 
@@ -297,7 +311,7 @@ public class ProfileEditFragment extends Fragment {
         skillsView.putExtra("user",user);
         skillsView.putExtra("email",user.getEmail());
         skillsView.putExtra("ForEdit",true);
-        startActivity(skillsView);
+        startActivityForResult(skillsView,SKILL_EDIT);
     }
 
     public void getUserInfo() {
@@ -349,17 +363,18 @@ public class ProfileEditFragment extends Fragment {
         return index;
     }
 
-//    public void restoreValues(User user){
-//        mCountry.setSelection(getIndex(mCountry,user.getCountry()));
-//        mFirstName.setText(user.getFirstname());
-//        mBirthDay.setText(user.getBirthDate());
-//        mLastName.setText(user.getLastname());
-//        mEmail.setText(user.getEmail());
-//        mPhone.setText(user.getPhone());
-//        country = user.getCountry();
-//        mCity.setText(user.getCity());
-//        progress.dismiss();
-//        state=user.getState();
-//    }
+    public void restoreValues(User user){
+        mCountry.setSelection(getIndex(mCountry,user.getCountry()));
+        mFirstName.setText(user.getFirstname());
+        mBirthDay.setText(user.getBirthDate());
+        mLastName.setText(user.getLastname());
+        mEmail.setText(user.getEmail());
+        mPhone.setText(user.getPhone());
+        country = user.getCountry();
+        mCity.setText(user.getCity());
+        state=user.getState();
+        setupSpinners();
+        progress.dismiss();
+    }
 
 }
