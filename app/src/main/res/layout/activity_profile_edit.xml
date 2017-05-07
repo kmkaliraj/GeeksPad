@@ -1,27 +1,38 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:design="http://schemas.android.com/apk/res-auto"
-    android:baselineAligned="false"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:paddingBottom="20dp">
+        android:id="@+id/profileEdit"
+        android:paddingTop="5dp"
+        android:paddingBottom="10dp"/>
 
-        <FrameLayout
-            android:id="@+id/profileEdit"
+    <RelativeLayout
+        android:id="@+id/editProfiledivider"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_above="@+id/relSendMessage" />
+
+    <RelativeLayout
+        android:id="@+id/relSendMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:background="@android:color/white"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/btn_editSkills"
             android:layout_width="match_parent"
-            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:paddingBottom="10dp"/>
-    </LinearLayout>
+            android:text="Edit Skills"
+            android:background="@android:color/holo_blue_light"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
 
-</LinearLayout>
+    </RelativeLayout>
 
+</RelativeLayout>

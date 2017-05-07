@@ -136,13 +136,6 @@
             android:hint="@string/city"
             android:inputType="textCapWords" />
 
-        <Button
-            android:id="@+id/Button_submit"
-            android:layout_marginTop="20dp"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:text="@string/save" />
 
     </LinearLayout>
 
