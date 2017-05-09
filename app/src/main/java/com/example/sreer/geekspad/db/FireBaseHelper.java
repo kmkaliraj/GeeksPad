@@ -1,7 +1,10 @@
 package com.example.sreer.geekspad.db;
 
+import android.widget.Toast;
+
 import com.example.sreer.geekspad.model.Skill;
 import com.example.sreer.geekspad.model.User;
+import com.example.sreer.geekspad.ui.fragment.UsersListViewFragment;
 import com.example.sreer.geekspad.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -18,7 +21,7 @@ import java.util.List;
 
 public class FireBaseHelper {
     private  GetAllUsersInterface getAllUsersInterface;
-    private getUserByMailInterface getUserByMailInterface;
+    private GetUserByMailInterface getUserByMailInterface;
 
     public FireBaseHelper(){
 
@@ -28,10 +31,9 @@ public class FireBaseHelper {
         this.getAllUsersInterface = getAllUsersInterface;
     }
 
-    public FireBaseHelper(getUserByMailInterface getUserByMailInterface){
+    public FireBaseHelper(GetUserByMailInterface getUserByMailInterface){
         this.getUserByMailInterface =getUserByMailInterface;
     }
-
 
 
     public  static  User getUserFromSnapShot(DataSnapshot dataSnapshot){
@@ -74,8 +76,11 @@ public class FireBaseHelper {
     }
 
 
-    public  List<User> getAllUsers(){
+    public void  getAllUsers(){
+        getAllUsers(null,null);
+    }
 
+    public  void getAllUsers(final String skill, final String proficiency){
 
         FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -84,8 +89,20 @@ public class FireBaseHelper {
                 if (dataSnapshot.getValue() != null) {
                    for(DataSnapshot userDataSnapshot: dataSnapshot.getChildren()) {
                        User user = getUserFromSnapShot(userDataSnapshot);
-                       if(!FirebaseAuth.getInstance().getCurrentUser().getEmail().equals(user.getEmail()))
-                       allUsers.add(user);
+                       if(!FirebaseAuth.getInstance().getCurrentUser().getEmail().equals(user.getEmail())) {
+                           if(skill != null){
+                               Skill userSkill = user.getSkill(skill);
+                               if(proficiency != null) {
+                                   if (userSkill != null && userSkill.proficency.equals(proficiency))
+                                       allUsers.add(user);
+                               }
+                               else if(userSkill != null)
+                                   allUsers.add(user);
+                           }
+                           else
+                               allUsers.add(user);
+
+                       }
                    }
                     getAllUsersInterface.onSuccessGetAllUsers(allUsers);
                 }
@@ -97,9 +114,66 @@ public class FireBaseHelper {
             }
         });
 
-        return null;
     }
 
+
+    public void getUsersByCountry(String country, final String state, final String skill, final String proficiency){
+
+        FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).orderByChild("country").equalTo(country).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<User> allUsers = new ArrayList<User>();
+                if (dataSnapshot.getValue() != null) {
+                    for(DataSnapshot userDataSnapshot: dataSnapshot.getChildren()) {
+                        User user = getUserFromSnapShot(userDataSnapshot);
+                        if (state != null && user.getState().equals(state)) {
+                            if (!FirebaseAuth.getInstance().getCurrentUser().getEmail().equals(user.getEmail())) {
+                                if (skill != null) {
+                                    Skill userSkill = user.getSkill(skill);
+                                    if (proficiency != null) {
+                                        if (userSkill != null && userSkill.proficency.equals(proficiency))
+                                            allUsers.add(user);
+                                    } else if (userSkill != null)
+                                        allUsers.add(user);
+                                } else
+                                    allUsers.add(user);
+                            }
+                        }
+                        else if (state ==  null){
+                            if (!FirebaseAuth.getInstance().getCurrentUser().getEmail().equals(user.getEmail())) {
+                                if (skill != null) {
+                                    Skill userSkill = user.getSkill(skill);
+                                    if (proficiency != null) {
+                                        if (userSkill != null && userSkill.proficency.equals(proficiency))
+                                            allUsers.add(user);
+                                    } else if (userSkill != null)
+                                        allUsers.add(user);
+                                } else
+                                    allUsers.add(user);
+                            }
+                        }
+                    }
+
+                }
+                getAllUsersInterface.onSuccessGetFilteredUsers(allUsers);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+               getAllUsersInterface.onFailureGetFilteredUsers();
+            }
+        });
+
+    }
+
+
+
+    public void getFilteredUsers(String country, String state, String skill, String proficiency){
+            if(country != null)
+            getUsersByCountry(country,state,skill,proficiency);
+            else if(country == null && state == null && skill != null)
+                getAllUsers(skill, proficiency);
+    }
 
     public void getUserByMail(String email) {
         String mail = email.replaceAll("\\.", "-");
@@ -128,13 +202,37 @@ public class FireBaseHelper {
     public static interface GetAllUsersInterface {
         public void onSuccessGetAllUsers(List<User> users);
         public void onFailureGetAllUsers();
+        public void onSuccessGetFilteredUsers(List<User> users);
+        public void onFailureGetFilteredUsers();
     }
 
-    public static interface getUserByMailInterface{
+    public static interface GetUserByMailInterface{
         public void onSuccessGetUserByMail(User user);
         public void onFailureGetUserByMail();
     }
 
 
+
+/*
+    public void initCurrentUser(String country, String state){
+        FirebaseDatabase.getInstance().getReference().
+                child(Constants.ARG_USERS)
+                .orderByChild("country")
+                .equalTo(country).orderByChild("state").equalTo(state).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+  */
 
 }

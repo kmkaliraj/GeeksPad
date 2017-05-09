@@ -96,17 +96,30 @@ public class UsersListViewFragment extends Fragment implements ItemClickSupport.
         super();
     }
 
+
+    public void applyFilter(String country, String state, String skill, String skill_level){
+       fireBaseHelper.getFilteredUsers(country, state, skill, skill_level);
+    }
+
     @Override
     public void onSuccessGetAllUsers(List<User> users) {
-        mAdapter.clear();
-        for(User user:users){
-            mAdapter.add(user);
-        }
-        recyclerView.smoothScrollToPosition(mAdapter.getItemCount()-1);
+        mAdapter = new UsersAdapter(users);
+        recyclerView.setAdapter(mAdapter);
     }
 
     @Override
     public void onFailureGetAllUsers() {
+
+    }
+
+    @Override
+    public void onSuccessGetFilteredUsers(List<User> users) {
+        mAdapter = new UsersAdapter(users);
+        recyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onFailureGetFilteredUsers() {
 
     }
 
@@ -115,4 +128,6 @@ public class UsersListViewFragment extends Fragment implements ItemClickSupport.
         userProfile.putExtra("email",emailKey);
         startActivity(userProfile);
     }
+
+
 }

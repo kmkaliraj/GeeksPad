@@ -7,4 +7,11 @@
         android:icon="@android:drawable/ic_lock_power_off"
         app:showAsAction="always|withText"
         />
+    <item
+        android:id="@+id/filter"
+        android:title="Filter"
+        android:icon="@drawable/filter"
+        app:showAsAction="ifRoom|withText"
+        />
+
 </menu>

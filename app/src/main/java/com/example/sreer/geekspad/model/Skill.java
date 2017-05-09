@@ -22,6 +22,8 @@ public class Skill implements Serializable{
         this.proficency = proficency;
     }
 
+
+
     public String getSkillname() {
         return skillname;
     }

@@ -63,8 +63,6 @@ public class SkillsViewFragment extends Fragment implements ItemClickSupport.OnI
         // Required empty public constructor
     }
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -204,5 +204,8 @@ public class User implements Parcelable {
         return user;
     }
 
+    public Skill getSkill(String skill){
+        return skills.get(skill);
+    }
 
 }

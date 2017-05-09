@@ -132,6 +132,10 @@ public class DisplayMapFragment extends Fragment implements OnMapReadyCallback,F
         }
     }
 
+    public void applyFilter(String country, String state, String skill, String skill_level){
+         fireBaseHelper.getFilteredUsers(country,state,skill,skill_level);
+    }
+
     @Override
     public void onSuccessGetAllUsers(List<User> users) {
        usersList = users;
@@ -140,6 +144,17 @@ public class DisplayMapFragment extends Fragment implements OnMapReadyCallback,F
 
     @Override
     public void onFailureGetAllUsers() {
+
+    }
+
+    @Override
+    public void onSuccessGetFilteredUsers(List<User> users) {
+        usersList = users;
+        markUsers(usersList);
+    }
+
+    @Override
+    public void onFailureGetFilteredUsers() {
 
     }
 }

@@ -35,7 +35,7 @@ import java.util.ArrayList;
  * Created by kalirajkalimuthu on 4/8/17.
  */
 
-public class ChatFragment extends Fragment implements ChatContract.View, TextView.OnEditorActionListener, FireBaseHelper.getUserByMailInterface {
+public class ChatFragment extends Fragment implements ChatContract.View, TextView.OnEditorActionListener, FireBaseHelper.GetUserByMailInterface {
     private RecyclerView mRecyclerViewChat;
     private EditText mETxtMessage;
 

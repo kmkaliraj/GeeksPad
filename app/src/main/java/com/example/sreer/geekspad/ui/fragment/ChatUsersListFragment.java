@@ -68,6 +68,9 @@ public class ChatUsersListFragment extends Fragment implements ItemClickSupport.
         startActivity(intent);
     }
 
+    public void applyFilter(String country, String state, String skill, String skill_level){
+        fireBaseHelper.getFilteredUsers(country,state,skill,skill_level);
+    }
 
     @Override
     public void onSuccessGetAllUsers(List<User> users) {
@@ -77,6 +80,17 @@ public class ChatUsersListFragment extends Fragment implements ItemClickSupport.
 
     @Override
     public void onFailureGetAllUsers() {
+
+    }
+
+    @Override
+    public void onSuccessGetFilteredUsers(List<User> users) {
+        mChatUsersRecyclerAdapter = new ChatUsersRecyclerAdapter(users);
+        chatUsersRecyclerView.setAdapter(mChatUsersRecyclerAdapter);
+    }
+
+    @Override
+    public void onFailureGetFilteredUsers() {
 
     }
 }
