@@ -29,9 +29,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.sreer.geekspad.R;
-import com.example.sreer.geekspad.db.FireBaseHelper;
-import com.example.sreer.geekspad.model.Skill;
-import com.example.sreer.geekspad.model.User;
 import com.example.sreer.geekspad.ui.fragment.ChatUsersListFragment;
 import com.example.sreer.geekspad.ui.fragment.DisplayMapFragment;
 import com.example.sreer.geekspad.ui.fragment.ProfileViewFragment;
@@ -51,7 +48,6 @@ public class HomePageActivity extends AppCompatActivity{
     private DisplayMapFragment usersMap;
     private ChatUsersListFragment chatView;
     private MenuItem mFilterMenuItem;
-    private  FireBaseHelper fireBaseHelper;
 
 
     private  View popupView;
