@@ -33,6 +33,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
 
 public class ProfileViewFragment extends Fragment {
     private TextView mProfileLine1, mProfileLine2, mProfileLine3;
@@ -44,6 +47,7 @@ public class ProfileViewFragment extends Fragment {
     private Boolean isView = false;
     private String emailKey,phone;
     private User profileOwner;
+    private final static int EDIT_STATUS = 1;
 
 
     public ProfileViewFragment() {
@@ -123,7 +127,20 @@ public class ProfileViewFragment extends Fragment {
 
     public void editProfile(){
         Intent editProfile = new Intent(getActivity(), ProfileEditActivity.class);
-        startActivity(editProfile);
+        //startActivity(editProfile);
+        startActivityForResult(editProfile,EDIT_STATUS);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == EDIT_STATUS) {
+            switch (resultCode) {
+                case RESULT_OK:
+                    getUserInfo();
+                    break;
+                case RESULT_CANCELED:
+                    break;
+            }
+        }
     }
 
     public void displaySkills(User user){

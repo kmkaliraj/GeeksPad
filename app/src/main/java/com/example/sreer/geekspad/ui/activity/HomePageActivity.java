@@ -127,7 +127,6 @@ public class HomePageActivity extends AppCompatActivity{
                 break;
         }
 
-        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
@@ -165,11 +164,9 @@ public class HomePageActivity extends AppCompatActivity{
         Toast.makeText(this, "Logged Out Successfully" , Toast.LENGTH_LONG).show();
     }
 
+    public void showPopup() {
 
-
-    public void showPopup(){
-
-        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         popupView = inflater.inflate(R.layout.filter_menu_popup, null);
 
         display = ((WindowManager) this
@@ -178,25 +175,26 @@ public class HomePageActivity extends AppCompatActivity{
         display.getSize(size);
         int width = size.x;
         int height = size.y;
-        final PopupWindow popupWindow = new PopupWindow(popupView,width-40,
+        final PopupWindow popupWindow = new PopupWindow(popupView, width - 40,
                 ViewGroup.LayoutParams.WRAP_CONTENT, true);
         // display the popup in the center
         popupWindow.showAtLocation(getWindow().getDecorView().getRootView(), Gravity.CENTER, 0, 0);
-        final Button doneButton = (Button)popupView.findViewById(R.id.add_skills_button);
+        final Button doneButton = (Button) popupView.findViewById(R.id.add_skills_button);
         final TextView seekbarText = (TextView) popupView.findViewById(R.id.proficiency);
         final SeekBar seekBar = (SeekBar) popupView.findViewById(R.id.input_proficiency);
 
-        doneButton.setOnClickListener(new Button.OnClickListener(){
+        doneButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                 applyFilter();
+                applyFilter();
 
                 popupWindow.dismiss();
-            }});
+            }
+        });
 
 
-        ImageButton closeButton = (ImageButton)popupView.findViewById(R.id.popup_close);
+        ImageButton closeButton = (ImageButton) popupView.findViewById(R.id.popup_close);
 
         // Set a click listener for the popup window close button
         closeButton.setOnClickListener(new View.OnClickListener() {
@@ -208,14 +206,14 @@ public class HomePageActivity extends AppCompatActivity{
         });
 
 
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
                 // TODO Auto-generated method stub
-                skill_level = String.valueOf(progress)+"%";
-                seekbarText.setText(String.valueOf(progress)+"%");
+                skill_level = String.valueOf(progress) + "%";
+                seekbarText.setText(String.valueOf(progress) + "%");
             }
 
             @Override
@@ -231,7 +229,7 @@ public class HomePageActivity extends AppCompatActivity{
 
 
         // initialize skills in the spinner
-        mSkills = (Spinner)popupView.findViewById(R.id.input_skills);
+        mSkills = (Spinner) popupView.findViewById(R.id.input_skills);
         ArrayAdapter skillsAdapter = ArrayAdapter.createFromResource(this,
                 R.array.skills, R.layout.spinner_item);
         skillsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -249,8 +247,8 @@ public class HomePageActivity extends AppCompatActivity{
             }
         });
 
-        mCountry = (Spinner)popupView.findViewById(R.id.input_country);
-        mState  = (Spinner)popupView.findViewById(R.id.input_state);
+        mCountry = (Spinner) popupView.findViewById(R.id.input_country);
+        mState = (Spinner) popupView.findViewById(R.id.input_state);
 
         mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -278,7 +276,6 @@ public class HomePageActivity extends AppCompatActivity{
 
         populateCountryData();
         populateStateData();
-
     }
 
 
@@ -318,5 +315,4 @@ public class HomePageActivity extends AppCompatActivity{
         else if (fragment instanceof DisplayMapFragment)
             ((DisplayMapFragment)fragment).applyFilter(country,state,skill,skill_level);
     }
-
 }

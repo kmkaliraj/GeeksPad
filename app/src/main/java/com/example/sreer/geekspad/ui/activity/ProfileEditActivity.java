@@ -1,14 +1,19 @@
 package com.example.sreer.geekspad.ui.activity;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.sreer.geekspad.R;
 import com.example.sreer.geekspad.ui.fragment.ProfileEditFragment;
 
 public class ProfileEditActivity extends AppCompatActivity {
+
+    private Button mEditSkills;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,5 +24,18 @@ public class ProfileEditActivity extends AppCompatActivity {
         ProfileEditFragment profileEdit = new ProfileEditFragment();
         fragmentTransaction.replace(R.id.profileEdit, profileEdit);
         fragmentTransaction.commit();
+        mEditSkills = (Button) findViewById(R.id.btn_editSkills);
+        mEditSkills.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToEditSkills();
+            }
+        });
+    }
+
+    public void goToEditSkills(){
+        FragmentManager manager = getSupportFragmentManager();
+        Fragment fragment = manager.findFragmentById(R.id.profileEdit);
+        ((ProfileEditFragment)fragment).editSkills();
     }
 }
