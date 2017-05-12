@@ -42,6 +42,9 @@ public class SignupActivity extends AppCompatActivity {
     private TextView mCalendarLink;
     private User user;
 
+
+    private String country;
+    private  String state;
     public ProgressDialog progressDailog;
 
     private  List<String> states = new ArrayList<String>(){{
@@ -96,6 +99,8 @@ public class SignupActivity extends AppCompatActivity {
         mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                country = mCountry.getSelectedItem().toString();
+                state = null;
                 populateStateDetails();
             }
 
@@ -108,7 +113,7 @@ public class SignupActivity extends AppCompatActivity {
         mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-
+                state = mState.getSelectedItem().toString();
             }
 
             @Override
@@ -196,7 +201,7 @@ public class SignupActivity extends AppCompatActivity {
         return this.mFirstName.getText().toString().length()==0;
     }
     public boolean isEmptyLastName(){
-        return this.mFirstName.getText().toString().length()==0;
+        return this.mLastName.getText().toString().length()==0;
     }
 
     public boolean isUserEmailExist(){
@@ -212,11 +217,11 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public boolean isValidCountry(){
-        return !(mCountry.getSelectedItem().toString().contains("none"));
+        return (country != null && !country.toLowerCase().contains("select"));
     }
 
     public boolean isValidState(){
-        return !(mState.getSelectedItem().toString().contains("none"));
+        return (state != null && !state.toLowerCase().contains("select"));
     }
 
 
@@ -270,7 +275,7 @@ public class SignupActivity extends AppCompatActivity {
         if(isEmptyFirstName())
             mFirstName.setError("FirstName is required!");
         else if(isEmptyLastName())
-            mLastName.setError("FirstName is required!");
+            mLastName.setError("Last Name is required!");
         else if(!isValidEmail())
             mEmail.setError("Must enter a valid email");
         else if(!isValidPassword())

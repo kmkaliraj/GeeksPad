@@ -1,0 +1,51 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf820
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 About GeeksPad\
+\
+    Geekspad is an android application where users can network with other tech people who have interest in particular technology. \
+\
+Guidelines to use our application:\
+\
+ 1. sign up us new user\
+    enter all required details, first name, last name, email, password, country, state city.\
+    add skills before confirming the registration.(Adding skills is optional).\
+2. login with username password.\
+   username - email id\
+  password - password entered during registration.\
+3. Login Success  directs you to list view in home page with all the users in the app.\
+  Click on any users take you to their profile. \
+4. Change the view using bottom navigation menu. It has below options in order\
+      1. profile\
+      2. list view\
+      3. map view\
+     4. chat view.\
+\
+User Views:\
+\
+Action bar contains sign out  and filter menu. Filter menu is enabled only for List view and Map view.\
+\
+1. Profile View - User can view their profile and edit their personal information and Skills. As of now user can edit any information other than email and password. \
+Updated changes reflect in the profile immediately.\
+\
+2. List view  and Map View\
+   View all the users in the app through list view and map. \
+List View - Click any user -> takes you to their profile -> view their full details with skills -> Option for chat and call\
+\
+Map View - View the markers on map. Click on marker opens marker window with user basic information.\
+Again clicking on the marker window takes you to the user profile -> view their full details with skills -> Option for chat and call\
+\
+It has filter menu option on action bar. Apply filter based on country, state, skills and proficiency level. \
+Make sure - state can always be used in conjunction with country , but never alone. Similarly, proficiency can always be used in conjunction with skills. Try any combination with above rules applied.\
+\
+3. Chat View\
+ List all the users on the app. You can click  on any users and initiate the chat directly.\
+\
+\
+\
+\
+  }
