@@ -24,18 +24,6 @@ public class ProfileEditActivity extends AppCompatActivity {
         ProfileEditFragment profileEdit = new ProfileEditFragment();
         fragmentTransaction.replace(R.id.profileEdit, profileEdit);
         fragmentTransaction.commit();
-        mEditSkills = (Button) findViewById(R.id.btn_editSkills);
-        mEditSkills.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToEditSkills();
-            }
-        });
-    }
 
-    public void goToEditSkills(){
-        FragmentManager manager = getSupportFragmentManager();
-        Fragment fragment = manager.findFragmentById(R.id.profileEdit);
-        ((ProfileEditFragment)fragment).editSkills();
     }
 }

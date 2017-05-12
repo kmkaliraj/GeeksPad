@@ -105,8 +105,8 @@ public class ProfileEditFragment extends Fragment {
         mEmail.setTag(mEmail.getKeyListener());
         mEmail.setKeyListener(null);
         mEmail.setEnabled(false);
-        mAddSkills.setVisibility(View.INVISIBLE);
-       // mAddSkills.setText("Edit Skills");
+        //mAddSkills.setVisibility(View.INVISIBLE);
+       mAddSkills.setText("Edit Skills");
         return view;
     }
 
@@ -130,18 +130,14 @@ public class ProfileEditFragment extends Fragment {
                 setBirthday();
             }
         });
-//        mAddSkills.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        mAddSkills.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User user = createUser();
+                goToSkills(user);
+            }
+        });
 
-    }
-
-    public void editSkills(){
-        User user = createUser();
-        goToSkills(user);
     }
 
     public void setupSpinners(){
