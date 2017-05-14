@@ -46,7 +46,11 @@ Make sure - state can always be used in conjunction with country , but never alo
 3. Chat View
  List all the users on the app. You can click  on any users and initiate the chat directly.
 
+Limitation:
 
+1) When filters are applied if proficiency level is given for a skill set as a filter condition, it will look for exact proficiency level match only.Also if proficiency level is ones applied and brought back to zero for next filter condition it treat proficiency level zero as a filter parameter.
+
+2) The selected item is not highlighted in add/update skill screen as we are using customised Recycler view adapters, the highting part looks way too complex.
 
 
   
